@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Bunk & Bite | Command Center</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <style>
+    /* Typography */
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+
+    :root {
+        --bg-main: #09090b; /* Zinc 950 */
+        --bg-card: #18181b; /* Zinc 900 */
+        --accent-lime: #d9f99d; /* Lime 200 */
+        --accent-orange: #fb923c; /* Orange 400 */
+        --text-main: #fafafa;
+        --text-muted: #a1a1aa;
+    }
+
+    body {
+        font-family: 'Inter', sans-serif;
+        background-color: var(--bg-main);
+        color: var(--text-main);
+        overflow-x: hidden;
+    }
+
+    h1, h2, h3, h4, .font-heading {
+        font-family: 'Space Grotesk', sans-serif;
+    }
+
+    /* Grain Texture */
+    .bg-grain {
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 50; opacity: 0.04;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: var(--bg-main); }
+    ::-webkit-scrollbar-thumb { background: #3f3f46; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #52525b; }
+
+    /* Bento Card */
+    .bento-card {
+        background-color: var(--bg-card);
+        border: 1px solid rgba(255,255,255,0.05);
+        transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+        position: relative;
+        overflow: hidden;
+    }
+    .bento-card:hover {
+        border-color: rgba(255,255,255,0.15);
+        box-shadow: 0 20px 40px -10px rgba(0,0,0,0.5);
+    }
+
+    /* Sidebar Active */
+    .sidebar-active {
+        background-color: rgba(255, 255, 255, 0.05);
+        border-right: 2px solid var(--accent-orange);
+        color: white !important;
+    }
+
+    /* Order Row Styling */
+    .order-row {
+        transition: background-color 0.2s ease;
+        border-left: 2px solid transparent;
+    }
+    .order-row:hover {
+        background-color: rgba(255,255,255,0.02);
+        border-left-color: var(--accent-orange);
+    }
+
+    /* Animations */
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    .animate-up { animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+
+    @keyframes float-blob {
+        0% { transform: translate(0px, 0px) scale(1); }
+        33% { transform: translate(30px, -50px) scale(1.1); }
+        66% { transform: translate(-20px, 20px) scale(0.9); }
+        100% { transform: translate(0px, 0px) scale(1); }
+    }
+    .animate-blob { animation: float-blob 10s infinite ease-in-out; }
+  </style>
+</head>
+
+<body class="flex min-h-screen relative selection:bg-orange-500 selection:text-white">
+
+  <div class="bg-grain"></div>
+  <div class="fixed top-0 left-0 w-full h-full overflow-hidden -z-10">
+      <div class="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-orange-600/10 rounded-full blur-[100px] animate-blob"></div>
+      <div class="absolute bottom-[-10%] right-[-10%] w-[500px] h-[500px] bg-lime-500/5 rounded-full blur-[100px] animate-blob" style="animation-delay: 2s"></div>
+  </div>
+
+  <aside class="w-20 lg:w-64 bg-zinc-950/80 border-r border-white/5 backdrop-blur-md flex flex-col fixed h-full z-50 overflow-y-auto transition-all duration-300">
+    <div class="p-6 flex items-center gap-3 shrink-0 h-20 border-b border-white/5">
+      <div class="w-8 h-8 bg-white text-black flex items-center justify-center rounded font-bold text-lg">B</div>
+      <span class="hidden lg:block font-heading font-bold text-xl tracking-tight text-white">Bunk<span class="text-gray-500">&</span>Bite</span>
+    </div>
+
+    <nav class="flex-grow mt-6 px-3 pb-20 space-y-6">
+
+      <div>
+        <p class="hidden lg:block text-[10px] font-bold text-gray-500 uppercase px-4 mb-2 tracking-widest font-heading">Operations</p>
+        <a href="show_orders" class="sidebar-active flex items-center gap-3 p-3 rounded text-gray-400 hover:text-white hover:bg-white/5 transition group">
+          <i class="fas fa-th-large w-5 group-hover:text-orange-400 transition"></i>
+          <span class="hidden lg:block font-medium text-sm">Dashboard</span>
+        </a>
+        <a href="add_items" class="flex items-center gap-3 p-3 rounded text-gray-400 hover:text-white hover:bg-white/5 transition group">
+          <i class="fas fa-plus-circle w-5 group-hover:text-orange-400 transition"></i>
+          <span class="hidden lg:block font-medium text-sm">Add Menu Item</span>
+        </a>
+        <a href="show_items" class="flex items-center gap-3 p-3 rounded text-gray-400 hover:text-white hover:bg-white/5 transition group">
+          <i class="fas fa-utensils w-5 group-hover:text-orange-400 transition"></i>
+          <span class="hidden lg:block font-medium text-sm">Manage Menu</span>
+        </a>
+      </div>
+
+      <div>
+        <p class="hidden lg:block text-[10px] font-bold text-gray-500 uppercase px-4 mb-2 tracking-widest font-heading">User Mgmt</p>
+        <a href="admin_reg" class="flex items-center gap-3 p-3 rounded text-gray-400 hover:text-white hover:bg-white/5 transition group">
+          <i class="fas fa-user-shield w-5 group-hover:text-lime-400 transition"></i>
+          <span class="hidden lg:block font-medium text-sm">Add Admin</span>
+        </a>
+        <a href="student_reg_admin" class="flex items-center gap-3 p-3 rounded text-gray-400 hover:text-white hover:bg-white/5 transition group">
+          <i class="fas fa-user-plus w-5 group-hover:text-lime-400 transition"></i>
+          <span class="hidden lg:block font-medium text-sm">Add Student</span>
+        </a>
+        <a href="show_students" class="flex items-center gap-3 p-3 rounded text-gray-400 hover:text-white hover:bg-white/5 transition group">
+          <i class="fas fa-users w-5 group-hover:text-lime-400 transition"></i>
+          <span class="hidden lg:block font-medium text-sm">Manage Students</span>
+        </a>
+      </div>
+
+      <div>
+        <p class="hidden lg:block text-[10px] font-bold text-gray-500 uppercase px-4 mb-2 tracking-widest font-heading">Account</p>
+        <a href="admin_profile" class="flex items-center gap-3 p-3 rounded text-gray-400 hover:text-white hover:bg-white/5 transition group">
+          <i class="fas fa-id-card w-5 group-hover:text-white transition"></i>
+          <span class="hidden lg:block font-medium text-sm">Manage Profile</span>
+        </a>
+        <a href="change_password" class="flex items-center gap-3 p-3 rounded text-gray-400 hover:text-white hover:bg-white/5 transition group">
+          <i class="fas fa-key w-5 group-hover:text-white transition"></i>
+          <span class="hidden lg:block font-medium text-sm">Change Password</span>
+        </a>
+        <a href="logout" class="flex items-center gap-3 p-3 rounded text-red-400/70 hover:bg-red-500/10 hover:text-red-400 transition group mt-2">
+          <i class="fas fa-sign-out-alt w-5"></i>
+          <span class="hidden lg:block font-medium text-sm">Logout</span>
+        </a>
+      </div>
+
+    </nav>
+  </aside>
+
+  <main class="ml-20 lg:ml-64 flex-grow relative">
+
+    <header class="h-20 bg-zinc-950/80 backdrop-blur-md border-b border-white/5 flex items-center justify-between px-8 sticky top-0 z-40">
+      <div class="flex items-center gap-2 text-sm">
+        <i class="fas fa-layer-group text-orange-500"></i>
+        <span class="text-gray-400">Command Center /</span>
+        <span class="text-white font-bold tracking-wide">Live Feed</span>
+      </div>
+
+      <div class="flex items-center gap-6">
+        <div class="hidden md:flex items-center gap-2 px-3 py-1 rounded bg-lime-400/10 border border-lime-400/20">
+          <span class="relative flex h-2 w-2">
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-lime-400 opacity-75"></span>
+            <span class="relative inline-flex rounded-full h-2 w-2 bg-lime-500"></span>
+          </span>
+          <span class="text-[10px] font-bold text-lime-400 uppercase tracking-wider">System Online</span>
+        </div>
+
+        <div class="h-8 w-px bg-white/10 mx-2"></div>
+
+        <div class="flex items-center gap-3 text-right">
+          <div class="hidden md:block">
+            <div class="text-sm font-bold text-white font-heading">Admin Portal</div>
+            <div class="text-xs text-gray-500">Bunk & Bite v2.0</div>
+          </div>
+          <div class="w-10 h-10 rounded bg-zinc-900 border border-white/10 flex items-center justify-center text-gray-300">
+            <i class="fas fa-user-shield"></i>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="p-6 md:p-10 max-w-7xl mx-auto min-h-[85vh]">
+
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
+        <div>
+          <h2 class="text-3xl font-bold font-heading text-white tracking-tight">Incoming <span class="text-orange-500">Orders</span></h2>
+          <p class="text-gray-400 mt-2 text-sm font-medium">Real-time order processing queue.</p>
+        </div>
+        <div class="flex gap-3">
+           <form action="{{ url_for('accepted_orders') }}" method="get">
+            <button class="bg-zinc-800 border border-white/10 px-5 py-3 rounded text-xs font-bold uppercase tracking-wider text-gray-300 hover:text-white hover:bg-zinc-700 transition font-heading">Accepted</button>
+           </form>
+           <form action="{{ url_for('rejected_orders') }}" method="get">
+             <button class="bg-zinc-800 border border-white/10 px-5 py-3 rounded text-xs font-bold uppercase tracking-wider text-gray-300 hover:text-white hover:bg-zinc-700 transition font-heading">Rejected</button>
+           </form>
+          <button onclick="location.reload()" class="bg-orange-500 hover:bg-orange-400 px-6 py-3 rounded text-xs font-bold uppercase tracking-wider text-black shadow-lg hover:scale-105 transition transform active:scale-95 flex items-center gap-2 font-heading">
+             <i class="fas fa-sync-alt"></i> Refresh
+          </button>
+        </div>
+      </div>
+
+      {% if grouped_orders %}
+        {% for st_id in grouped_orders.keys()|sort %}
+
+        <div id="st-{{ st_id }}" class="bento-card rounded-xl overflow-hidden mb-8 animate-up shadow-2xl shadow-black/50">
+
+          <div class="bg-zinc-900/80 backdrop-blur px-6 py-5 border-b border-white/5 flex justify-between items-center gap-4 relative overflow-hidden">
+            <div class="absolute top-0 right-0 w-20 h-full bg-gradient-to-l from-white/5 to-transparent skew-x-12 pointer-events-none"></div>
+
+            <div class="flex items-center gap-5 relative z-10">
+              <div class="w-12 h-12 rounded-lg bg-zinc-800 flex items-center justify-center border border-white/10 text-orange-500 shadow-inner">
+                <i class="fas fa-receipt text-xl"></i>
+              </div>
+
+              <div>
+                 <span class="block text-[10px] text-gray-500 uppercase font-bold tracking-widest font-heading mb-0.5">Student ID</span>
+                 <span class="text-xl font-bold text-white font-mono tracking-wide">#{{ st_id }}</span>
+              </div>
+            </div>
+
+            <div class="flex items-center gap-3 bg-black/40 px-4 py-2 rounded-lg border border-white/5 relative z-10">
+               <i class="fas fa-layer-group text-lime-400"></i>
+               <span class="text-sm font-bold text-white">{{ grouped_orders[st_id]|length }}</span>
+               <span class="text-xs text-gray-400 uppercase tracking-wide font-heading">Items</span>
+            </div>
+          </div>
+
+          <div class="flex flex-col divide-y divide-white/5 bg-zinc-900/30">
+
+            <div class="hidden md:grid grid-cols-12 px-6 py-3 bg-white/[0.02] text-[10px] uppercase font-bold text-gray-500 tracking-wider font-heading">
+                <div class="col-span-1">#ID</div>
+                <div class="col-span-5 pl-2">Item Details</div>
+                <div class="col-span-2 text-center">Qty</div>
+                <div class="col-span-2 text-right">Price</div>
+                <div class="col-span-2 text-right">Action</div>
+            </div>
+
+            {% for order in grouped_orders[st_id] %}
+            <div class="order-row group relative grid grid-cols-2 md:grid-cols-12 gap-4 md:gap-0 px-6 py-4 items-center">
+
+              <div class="col-span-2 md:col-span-6 grid grid-cols-6 gap-4 w-full">
+                  <div class="col-span-1 flex items-center">
+                      <span class="md:hidden text-xs font-bold text-gray-600 uppercase mr-2">ID:</span>
+                      <span class="font-mono text-xs text-gray-500 group-hover:text-orange-500 transition-colors">#{{ order[0] }}</span>
+                  </div>
+
+                  <div class="col-span-5 flex items-start gap-3 pl-2">
+                      <div class="hidden md:flex w-9 h-9 rounded bg-zinc-800/50 border border-white/5 items-center justify-center text-gray-400 group-hover:text-white group-hover:border-white/20 transition-all shrink-0">
+                          <i class="fas fa-utensils text-[10px]"></i>
+                      </div>
+                      <div>
+                        <div class="flex items-center gap-2 mb-0.5">
+                            <span class="font-bold text-white text-sm md:text-base font-heading leading-tight">{{ order[1] }}</span>
+                            {% if order[4] %}
+                            <span class="text-[9px] px-1.5 py-0.5 rounded bg-white/5 text-gray-400 border border-white/5 uppercase tracking-wide shrink-0">{{ order[4] }}</span>
+                            {% endif %}
+                        </div>
+                        <div class="text-[10px] text-gray-500 font-mono flex items-center gap-2">
+                            <span><i class="far fa-clock"></i>
+                              {% if order[7].strftime is defined %}
+                                {{ order[7].strftime("%H:%M") }}
+                              {% else %}
+                                {{ order[7] }}
+                              {% endif %}
+                            </span>
+                        </div>
+                      </div>
+                  </div>
+              </div>
+
+              <div class="col-span-2 md:col-span-6 grid grid-cols-3 md:grid-cols-6 gap-4 md:gap-0 items-center">
+
+                  <div class="col-span-1 md:col-span-2 flex flex-col items-center justify-center">
+                    <span class="md:hidden text-xs font-bold text-gray-600 uppercase mb-1">Qty</span>
+                    <div class="flex items-center justify-center w-8 h-8 rounded bg-zinc-950 border border-white/10 text-white font-mono text-xs font-bold shadow-inner">
+                        {{ order[2] }}
+                    </div>
+                  </div>
+
+                  <div class="col-span-1 md:col-span-2 flex flex-col items-end justify-center">
+                    <span class="md:hidden text-xs font-bold text-gray-600 uppercase mb-1">Total</span>
+                    <span class="text-lime-400 font-mono font-bold text-sm">₹{{ order[3] }}</span>
+                  </div>
+
+                  <div class="col-span-1 md:col-span-2 flex justify-end gap-2">
+                      <form action="{{ url_for('update_order_status_form') }}" method="post">
+                        <input type="hidden" name="order_id" value="{{ order[0] }}">
+                        <input type="hidden" name="status" value="accepted">
+                        <input type="hidden" name="anchor" value="st-{{ st_id }}">
+
+                        <button title="Accept" class="w-8 h-8 rounded bg-lime-500/10 border border-lime-500/20 text-lime-400 hover:bg-lime-500 hover:text-black hover:shadow-[0_0_10px_rgba(132,204,22,0.4)] transition-all duration-300 flex items-center justify-center">
+                          <i class="fas fa-check text-xs"></i>
+                        </button>
+                      </form>
+
+                      <form action="{{ url_for('update_order_status_form') }}" method="post">
+                        <input type="hidden" name="order_id" value="{{ order[0] }}">
+                        <input type="hidden" name="status" value="rejected">
+                        <input type="hidden" name="anchor" value="st-{{ st_id }}">
+
+                        <button title="Reject" class="w-8 h-8 rounded bg-red-500/10 border border-red-500/20 text-red-500 hover:bg-red-500 hover:text-white hover:shadow-[0_0_10px_rgba(239,68,68,0.4)] transition-all duration-300 flex items-center justify-center">
+                          <i class="fas fa-times text-xs"></i>
+                        </button>
+                      </form>
+                  </div>
+              </div>
+            </div>
+            {% endfor %}
+
+          </div>
+          <div class="bg-zinc-950/50 px-6 py-2 border-t border-white/5 flex justify-between items-center">
+               <div class="text-[10px] text-gray-600 font-mono uppercase tracking-wider">Student ID: {{ st_id }}</div>
+               <div class="text-[10px] text-orange-500/50 font-mono">Bunk & Bite System</div>
+          </div>
+
+        </div>
+        {% endfor %}
+      {% else %}
+        <div class="h-96 bento-card rounded-xl flex flex-col items-center justify-center text-center p-8 border-dashed border-2 border-zinc-800 bg-zinc-900/20">
+           <div class="w-24 h-24 rounded-full bg-zinc-900 flex items-center justify-center mb-6 animate-pulse">
+               <i class="fas fa-satellite-dish text-4xl text-gray-700"></i>
+           </div>
+           <h3 class="text-2xl font-bold text-white mb-2 font-heading tracking-tight">System Idle</h3>
+           <p class="text-gray-500 max-w-sm">No incoming transmission. Waiting for student orders...</p>
+        </div>
+      {% endif %}
+
+    </div>
+  </main>
+</body>
+</html>

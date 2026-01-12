@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Hostel Hunger Express</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+    * { font-family: 'Poppins', sans-serif; }
+    .navbar { backdrop-filter: blur(10px); background: rgba(255,255,255,0.95); border-bottom: 1px solid rgba(255,171,118,0.7); transition: all 0.3s ease; }
+    .navbar.scrolled { background: rgba(255,171,118,0.95); backdrop-filter: blur(15px); }
+    .nav-item { position: relative; transition: all 0.3s ease; display: flex; align-items: center; gap: 0.5rem; color: #bf360c; }
+    .nav-item::after { content: ''; position: absolute; width: 0; height: 2px; bottom: -5px; left: 50%; background: linear-gradient(90deg,#ff6b6b,#ffab76); transition: all 0.3s ease; transform: translateX(-50%); }
+    .nav-item:hover::after { width: 100%; }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col bg-gradient-to-br from-orange-50 to-yellow-50">
+  <!-- Navbar -->
+  <nav class="navbar fixed top-0 w-full z-50 px-6 py-4 shadow-md">
+    <div class="max-w-4xl mx-auto flex justify-between items-center">
+      <!-- Logo -->
+      <div class="flex items-center space-x-2 cursor-pointer group">
+        <div class="w-12 h-12 bg-gradient-to-r from-orange-500 to-yellow-500 rounded-xl flex items-center justify-center text-white font-bold text-2xl shadow-lg group-hover:scale-110 transition-all duration-300">
+          <i class="fas fa-bolt animate-pulse"></i>
+        </div>
+        <span class="text-2xl font-black bg-gradient-to-r from-orange-600 to-orange-500 bg-clip-text text-transparent animate-pulse">HUNGER EXPRESS</span>
+      </div>
+      <!-- Desktop Nav -->
+      <div class="hidden md:flex items-center space-x-8">
+        <a href="/" class="nav-item text-lg hover:text-orange-500 transition-all duration-300 flex items-center gap-2">
+          <i class="fas fa-home text-xl"></i>Home
+        </a>
+        <a href="/login" class="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white px-8 py-3 rounded-2xl font-semibold text-lg shadow-lg hover:shadow-orange-400 transition-all duration-300 transform hover:-translate-y-1 flex items-center gap-2">
+          <i class="fas fa-user"></i>Login
+        </a>
+      </div>
+      <!-- Mobile Menu Button -->
+      <button id="mobile-menu-btn" class="md:hidden text-2xl text-orange-800 hover:text-orange-500 transition-colors">
+        <i class="fas fa-bars"></i>
+      </button>
+    </div>
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="md:hidden bg-white/95 backdrop-blur-xl rounded-xl mt-2 p-6 space-y-4 shadow-2xl border border-orange-100 hidden max-w-4xl mx-auto mx-6">
+      <a href="/" class="block text-xl text-orange-800 font-semibold hover:text-orange-500 transition-all duration-300 flex items-center gap-4 py-3 px-4 rounded-xl hover:bg-orange-50">
+        <i class="fas fa-home text-2xl"></i>Home
+      </a>
+      <a href="/login" class="block bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white text-xl font-semibold py-3 px-4 rounded-2xl text-center shadow-lg hover:shadow-orange-400 transition-all duration-300 transform hover:-translate-y-1 flex items-center justify-center gap-3">
+        <i class="fas fa-user"></i>Login
+      </a>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="container mx-auto px-6 pt-24 pb-12 flex-grow max-w-4xl">
+    {% block m1 %}{% endblock %}
+  </main>
+
+  <!-- Simple Footer -->
+  <footer class="bg-gradient-to-r from-orange-500 to-orange-600 text-white py-8 mt-auto border-t-4 border-orange-400">
+    <div class="text-center space-y-2">
+      <h3 class="text-2xl font-black bg-gradient-to-r from-yellow-300 to-orange-300 bg-clip-text text-transparent">Hostel Hunger Express</h3>
+      <p class="text-sm opacity-90">Lightning-fast hostel food delivery • © 2025</p>
+    </div>
+  </footer>
+
+  <script>
+    // Navbar scroll effect
+    window.addEventListener('scroll', () => {
+      document.querySelector('.navbar').classList.toggle('scrolled', window.scrollY > 50);
+    });
+    // Mobile menu
+    document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+      document.getElementById('mobile-menu').classList.toggle('hidden');
+    });
+    // Close mobile menu on outside click
+    document.addEventListener('click', (e) => {
+      const menu = document.getElementById('mobile-menu');
+      const btn = document.getElementById('mobile-menu-btn');
+      if (!btn.contains(e.target) && !menu.contains(e.target)) {
+        menu.classList.add('hidden');
+      }
+    });
+  </script>
+</body>
+</html>

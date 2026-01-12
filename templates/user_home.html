@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Bunk & Bite | Menu</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+  <style>
+    /* Typography: Space Grotesk & Inter */
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+
+    :root {
+        --bg-main: #09090b; /* Zinc 950 */
+        --bg-card: #18181b; /* Zinc 900 */
+        --accent-lime: #d9f99d; /* Lime 200 */
+        --accent-orange: #fb923c; /* Orange 400 */
+        --text-main: #fafafa;
+        --text-muted: #a1a1aa;
+    }
+
+    body {
+        font-family: 'Inter', sans-serif;
+        background-color: var(--bg-main);
+        color: var(--text-main);
+        overflow-x: hidden;
+    }
+
+    h1, h2, h3, h4, .font-heading {
+        font-family: 'Space Grotesk', sans-serif;
+    }
+
+    /* The "Grain" Texture */
+    .bg-grain {
+        position: fixed;
+        top: 0; left: 0; width: 100%; height: 100%;
+        pointer-events: none;
+        z-index: 50;
+        opacity: 0.04;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: var(--bg-main); }
+    ::-webkit-scrollbar-thumb { background: #3f3f46; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #52525b; }
+
+    /* Bento Card Logic */
+    .bento-card {
+        background-color: var(--bg-card);
+        border: 1px solid rgba(255,255,255,0.05);
+        transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+    }
+    .bento-card:hover {
+        transform: translateY(-4px);
+        border-color: rgba(255,255,255,0.15);
+        box-shadow: 0 20px 40px -10px rgba(0,0,0,0.5);
+    }
+
+    /* Sidebar Active State */
+    .sidebar-active {
+        background-color: rgba(255, 255, 255, 0.05);
+        border-right: 2px solid var(--accent-orange);
+        color: white !important;
+    }
+
+    /* Animations */
+    @keyframes fadeUp {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-card {
+        animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    @keyframes float-blob {
+        0% { transform: translate(0px, 0px) scale(1); }
+        33% { transform: translate(30px, -50px) scale(1.1); }
+        66% { transform: translate(-20px, 20px) scale(0.9); }
+        100% { transform: translate(0px, 0px) scale(1); }
+    }
+    .animate-blob { animation: float-blob 10s infinite ease-in-out; }
+
+    #cart-count-badge { transition: transform 0.15s ease-in-out; }
+  </style>
+</head>
+
+<body class="flex min-h-screen relative selection:bg-orange-500 selection:text-white">
+
+  <div class="bg-grain"></div>
+
+  <div class="fixed top-0 left-0 w-full h-full overflow-hidden -z-10">
+      <div class="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-orange-600/10 rounded-full blur-[100px] animate-blob"></div>
+      <div class="absolute bottom-[-10%] right-[-10%] w-[500px] h-[500px] bg-lime-500/5 rounded-full blur-[100px] animate-blob" style="animation-delay: 2s"></div>
+  </div>
+
+  <aside class="w-20 lg:w-64 bg-zinc-950/80 border-r border-white/5 backdrop-blur-md flex flex-col fixed h-full z-40 overflow-y-auto transition-all duration-300">
+    <div class="p-6 flex items-center gap-3 shrink-0 h-20 border-b border-white/5">
+      <div class="w-8 h-8 bg-white text-black flex items-center justify-center rounded font-bold text-lg">B</div>
+      <span class="hidden lg:block font-heading font-bold text-xl tracking-tight text-white">Bunk<span class="text-gray-500">&</span>Bite</span>
+    </div>
+
+    <nav class="flex-grow mt-6 px-3 pb-20 space-y-2">
+      <div>
+        <p class="hidden lg:block text-[10px] font-bold text-gray-500 uppercase px-4 mb-2 tracking-widest font-heading">Menu</p>
+        <a href="/user_home" class="sidebar-active flex items-center gap-3 p-3 rounded text-gray-400 hover:text-white hover:bg-white/5 transition group">
+          <i class="fas fa-book-open w-5 group-hover:text-orange-400 transition"></i>
+          <span class="hidden lg:block font-medium text-sm">Browse Menu</span>
+        </a>
+        <a href="/my_orders" class="flex items-center gap-3 p-3 rounded text-gray-400 hover:text-white hover:bg-white/5 transition group">
+          <i class="fas fa-receipt w-5 group-hover:text-lime-400 transition"></i>
+          <span class="hidden lg:block font-medium text-sm">My Orders</span>
+        </a>
+      </div>
+
+      <div class="mt-8">
+        <p class="hidden lg:block text-[10px] font-bold text-gray-500 uppercase px-4 mb-2 tracking-widest font-heading">Profile</p>
+        <a href="/my_profile" class="flex items-center gap-3 p-3 rounded text-gray-400 hover:text-white hover:bg-white/5 transition group">
+          <i class="fas fa-user-circle w-5 group-hover:text-white transition"></i>
+          <span class="hidden lg:block font-medium text-sm">My Profile</span>
+        </a>
+        <a href="/logout" class="flex items-center gap-3 p-3 rounded text-red-400/70 hover:bg-red-500/10 hover:text-red-400 transition group mt-2">
+          <i class="fas fa-sign-out-alt w-5"></i>
+          <span class="hidden lg:block font-medium text-sm">Logout</span>
+        </a>
+      </div>
+    </nav>
+  </aside>
+
+  <main class="ml-20 lg:ml-64 flex-grow relative">
+
+    <header class="h-20 bg-zinc-950/80 backdrop-blur-md border-b border-white/5 flex items-center justify-between px-8 sticky top-0 z-30">
+      <div class="flex items-center gap-2 text-sm">
+        <span class="text-orange-500 font-bold">///</span>
+        <span class="text-gray-400">Live Menu</span>
+      </div>
+
+      <div class="flex items-center gap-6">
+        <div class="flex items-center gap-3 text-right">
+          <div class="hidden md:block">
+            <div class="text-sm font-bold text-white font-heading">{{ user_name }}</div>
+            <div class="text-xs text-gray-500 font-medium">Student Account</div>
+          </div>
+          <div class="w-10 h-10 rounded bg-zinc-900 border border-white/10 flex items-center justify-center text-gray-200">
+            <i class="fas fa-user"></i>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    {% if show_welcome and user_name %}
+    <div class="px-6 md:px-10 pt-8">
+        <div id="welcome-banner" class="bento-card rounded-xl p-8 relative overflow-hidden flex items-center justify-between border-l-4 border-l-orange-500">
+            <div class="relative z-10">
+                <h2 class="text-2xl font-bold font-heading text-white">Welcome back, <span class="text-orange-400">{{ user_name }}</span>.</h2>
+                <p class="text-gray-400 mt-1 text-sm">Hungry? We've got fresh items prepared for you.</p>
+            </div>
+            <div class="absolute right-0 bottom-[-20px] opacity-5 rotate-12">
+                <i class="fas fa-burger text-9xl text-white"></i>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <div class="p-6 md:p-10 pb-32 max-w-[1600px] mx-auto">
+
+      {% if data %}
+      <form action="/cart_summary" method="post">
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {% for row in data %}
+            <div class="group bento-card rounded-xl overflow-hidden hover:-translate-y-2 transition-all duration-300 flex flex-col h-full animate-card item-card"
+                 style="animation-delay: {{ loop.index * 0.05 }}s">
+
+                <div class="relative h-56 overflow-hidden bg-zinc-800">
+                    <img src="{{ url_for('static', filename='item_photos/' ~ row[4]) }}"
+                         class="w-full h-full object-cover grayscale-[30%] group-hover:grayscale-0 transform group-hover:scale-110 transition duration-700"
+                         alt="{{ row[1] }}">
+
+                    <div class="absolute inset-0 bg-gradient-to-t from-[#18181b] via-transparent to-transparent opacity-90"></div>
+
+                    <span class="absolute top-4 left-4 bg-zinc-950/90 border border-white/10 text-white text-[10px] font-bold px-3 py-1.5 rounded uppercase tracking-wider font-heading">
+                        {{ row[3] }}
+                    </span>
+
+                    {% if row[5]=='in_stock' %}
+                        <span class="absolute top-4 right-4 bg-lime-400 text-black text-[10px] font-bold px-2 py-1 rounded shadow-lg">
+                             READY
+                        </span>
+                    {% else %}
+                        <span class="absolute top-4 right-4 bg-red-600 text-white text-[10px] font-bold px-2 py-1 rounded">
+                            SOLD OUT
+                        </span>
+                    {% endif %}
+                </div>
+
+                <div class="p-5 flex flex-col flex-grow justify-between -mt-4 relative z-10">
+                    <div>
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="text-white font-heading font-bold text-lg leading-tight">{{ row[1] }}</h3>
+                        </div>
+                        <p class="text-white font-mono font-bold text-xl">₹{{ row[2] }}</p>
+                    </div>
+
+                    <div class="mt-6 pt-4 border-t border-white/5">
+                        <input type="hidden" name="item_id[]" value="{{ row[0] }}">
+                        <input type="number" name="quantity_{{ row[0] }}" value="{{ row[-1] }}" class="hidden real-qty-input" data-id="{{ row[0] }}"/>
+
+                        {% if row[5]=="in_stock" %}
+
+                            <button type="button"
+                                    class="add-btn-{{ row[0] }} w-full py-3 bg-white text-black hover:bg-orange-400 hover:text-black rounded font-bold text-sm transition-all duration-300 font-heading tracking-wide"
+                                    onclick="showCounter({{ row[0] }})"
+                                    style="display: {{ 'none' if row[-1] > 0 else 'block' }}">
+                                <i class="fas fa-plus mr-1"></i> ADD TO TRAY
+                            </button>
+
+                            <div class="counter-group counter-{{ row[0] }}" style="display: {{ 'flex' if row[-1] > 0 else 'none' }}; align-items: center; justify-content: space-between; background: #27272a; border: 1px solid rgba(255,255,255,0.1); border-radius: 0.5rem; padding: 4px;">
+                                <button type="button" onclick="decreaseQty({{ row[0] }})" class="w-9 h-9 flex items-center justify-center bg-zinc-800 hover:bg-zinc-700 text-white rounded transition">
+                                    <i class="fas fa-minus text-xs"></i>
+                                </button>
+
+
+                                <span id="count-{{ row[0] }}" class="font-mono font-bold text-white text-lg">{{ row[-1] if row[-1] > 0 else 1 }}</span>
+                                <button type="button" onclick="increaseQty({{ row[0] }})" class="w-9 h-9 flex items-center justify-center bg-orange-500 hover:bg-orange-400 text-black rounded transition">
+                                    <i class="fas fa-plus text-xs"></i>
+                                </button>
+                            </div>
+
+                        {% else %}
+                            <div class="w-full py-3 bg-zinc-800/50 rounded border border-white/5 text-center opacity-50">
+                                <span class="text-xs text-gray-500 font-medium uppercase tracking-widest">Unavailable</span>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <input type="hidden" name="st_id" value="{{ id }}"/>
+
+        <div class="fixed bottom-8 right-8 z-50 flex items-end gap-4 pointer-events-none">
+            <div class="flex items-center gap-3 pointer-events-auto">
+                <button type="submit" class="group relative flex items-center gap-3 pl-6 pr-8 py-4 bg-orange-500 hover:bg-orange-400 text-black rounded-xl font-bold font-heading shadow-[0_0_40px_rgba(0,0,0,0.5)] hover:scale-105 transition-transform active:scale-95 border border-orange-400">
+                    <div class="relative">
+                        <i class="fas fa-shopping-basket text-xl"></i>
+                        <span id="cart-count-badge" class="absolute -top-3 -right-3 bg-black text-white text-[10px] font-bold h-6 w-6 flex items-center justify-center rounded-full border border-zinc-700 transform scale-100">
+                            0
+                        </span>
+                    </div>
+                    <span class="text-lg tracking-tight">VIEW TRAY</span>
+                    <i class="fas fa-arrow-right opacity-0 group-hover:opacity-100 -translate-x-2 group-hover:translate-x-0 transition-all duration-300"></i>
+                </button>
+            </div>
+        </div>
+
+      </form>
+      {% else %}
+        <div class="h-96 bento-card rounded-xl flex flex-col items-center justify-center text-center p-8 border-dashed border-2 border-white/10">
+           <div class="w-24 h-24 rounded-full bg-zinc-800 flex items-center justify-center mb-6">
+               <i class="fas fa-moon text-5xl text-gray-600"></i>
+           </div>
+           <h3 class="text-2xl font-bold text-white mb-2 font-heading">Kitchen Closed</h3>
+           <p class="text-gray-500 max-w-md">No menu items are currently available for ordering. Check back at 12 AM.</p>
+        </div>
+      {% endif %}
+
+    </div>
+  </main>
+
+  <script>
+    // --- CART LOGIC ---
+
+    function updateTotalBadge() 
+    {
+        let total = 0;
+        const inputs = document.querySelectorAll('.real-qty-input');
+        inputs.forEach(input => {
+            const val = parseInt(input.value) || 0;
+            total += val;
+        });
+
+        const badge = document.getElementById('cart-count-badge');
+        if (badge) {
+            badge.textContent = total;
+            badge.classList.remove('scale-100');
+            badge.classList.add('scale-125');
+            setTimeout(() => {
+                badge.classList.remove('scale-125');
+                badge.classList.add('scale-100');
+            }, 300);
+        }
+    }
+
+    function updateCartOnServer(id, action){
+      const input = document.querySelector('[data-id="'+id+'"]');
+      const qty = input.value;
+      fetch(action=='plus'?'/update_cart':'/delete_cart',{
+        method:'POST',
+        headers:{'Content-Type':'application/x-www-form-urlencoded'},
+        body:new URLSearchParams({item_id:id, quantity:qty})
+      })
+      .then(r=>r.json())
+      .catch(err => console.error(err));
+    }
+
+    function showCounter(id){
+      document.querySelector('.add-btn-'+id).style.display='none';
+      document.querySelector('.counter-'+id).style.display='flex';
+      const input = document.querySelector('[data-id="'+id+'"]');
+      input.value = 1;
+      document.getElementById('count-'+id).textContent = 1;
+      updateTotalBadge();
+      updateCartOnServer(id, 'plus');
+    }
+
+    function increaseQty(id){
+      const input = document.querySelector('[data-id="'+id+'"]');
+      let v = parseInt(input.value || 0) + 1;
+      input.value = v;
+      document.getElementById('count-'+id).textContent = v;
+      updateTotalBadge();
+      updateCartOnServer(id, 'plus');
+    }
+
+    function decreaseQty(id){
+      const input = document.querySelector('[data-id="'+id+'"]');
+      let v = parseInt(input.value || 0) - 1;
+      if(v <= 0){
+        v = 0;
+        input.value = 0;
+        document.querySelector('.counter-'+id).style.display='none';
+        document.querySelector('.add-btn-'+id).style.display='block';
+        updateTotalBadge();
+        updateCartOnServer(id, 'minus');
+      }
+       else {
+        input.value = v;
+        document.getElementById('count-'+id).textContent = v;
+        updateTotalBadge();
+        updateCartOnServer(id, 'plus');
+      }
+    }
+
+    // Initialize Cart Badge
+    document.addEventListener('DOMContentLoaded', () => {
+        updateTotalBadge();
+    });
+
+  </script>
+</body>
+</html>

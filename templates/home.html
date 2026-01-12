@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bunk & Bite | Campus Fuel</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        zinc: { 950: '#09090b', 900: '#18181b' }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* Typography */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+
+        :root {
+            /* Light Mode Variables (Default) */
+            --bg-main: #ffffff;
+            --bg-card: #f4f4f5;
+            --text-main: #09090b;
+            --text-muted: #71717a;
+            --nav-bg: rgba(255, 255, 255, 0.8);
+            --border-color: rgba(0,0,0,0.05);
+        }
+
+        /* Dark Mode Variables Override */
+        .dark {
+            --bg-main: #09090b; /* Zinc 950 */
+            --bg-card: #18181b; /* Zinc 900 */
+            --text-main: #fafafa;
+            --text-muted: #a1a1aa;
+            --nav-bg: rgba(9, 9, 11, 0.8);
+            --border-color: rgba(255,255,255,0.1);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            overflow-x: hidden;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        h1, h2, h3, h4, .font-heading {
+            font-family: 'Space Grotesk', sans-serif;
+        }
+
+        /* Grain Texture */
+        .bg-grain {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 50; opacity: 0.05;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg-main); }
+        ::-webkit-scrollbar-thumb { background: #52525b; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #71717a; }
+
+        /* Bento Card */
+        .bento-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+        .bento-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(249, 115, 22, 0.3); /* Orange hint on hover */
+            box-shadow: 0 10px 30px -5px rgba(0,0,0,0.1);
+        }
+
+        /* --- CONTINUOUS MARQUEE FIX --- */
+        @keyframes scroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-100%); }
+        }
+
+        .marquee-container {
+            display: flex;
+            overflow: hidden;
+            user-select: none;
+            gap: 0; /* Important: Remove default gap */
+        }
+
+        .marquee-content {
+            flex-shrink: 0;
+            min-width: 100%;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            animation: scroll 20s linear infinite; /* Control speed here */
+        }
+        /* ----------------------------- */
+
+        /* Custom Nav Backdrop */
+        .nav-backdrop {
+            background-color: var(--nav-bg);
+            backdrop-filter: blur(12px);
+        }
+    </style>
+</head>
+<body class="selection:bg-orange-500 selection:text-white relative">
+
+    <div class="bg-grain"></div>
+
+    <nav class="fixed w-full z-40 top-0 border-b border-black/5 dark:border-white/5 nav-backdrop transition-colors duration-300">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex justify-between items-center">
+
+            <a href="#" class="flex items-center gap-2 group">
+                <div class="w-8 h-8 bg-black dark:bg-white text-white dark:text-black flex items-center justify-center rounded font-bold text-lg transform group-hover:rotate-12 transition-transform">B</div>
+                <span class="font-heading font-bold text-xl tracking-tight text-black dark:text-white">Bunk<span class="text-gray-500">&</span>Bite</span>
+            </a>
+
+            <div class="flex items-center gap-6">
+
+                <div class="hidden md:flex items-center gap-8">
+                    <a href="menu_list" class="text-sm font-bold text-gray-600 dark:text-gray-300 hover:text-black dark:hover:text-white transition-colors">Menu</a>
+                    <div class="h-4 w-px bg-black/10 dark:bg-white/10"></div>
+                </div>
+
+                <a href="login" class="hidden md:block px-5 py-2 rounded-full bg-black dark:bg-white text-white dark:text-black text-sm font-bold hover:bg-orange-500 dark:hover:bg-orange-500 hover:text-white dark:hover:text-white transition-colors">
+                    Login
+                </a>
+
+                <button id="theme-toggle" class="w-9 h-9 rounded-full bg-zinc-100 dark:bg-zinc-800 text-zinc-800 dark:text-yellow-400 hover:scale-110 transition-all flex items-center justify-center border border-zinc-200 dark:border-zinc-700">
+                    <i class="fas fa-sun block dark:hidden"></i>
+                    <i class="fas fa-moon hidden dark:block"></i>
+                </button>
+
+                <button class="md:hidden text-black dark:text-white text-xl">
+                    <i class="fa-solid fa-bars-staggered"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="mt-20 w-full bg-orange-500 py-2 relative z-30 border-y border-orange-400 overflow-hidden">
+        <div class="marquee-container">
+            <div class="marquee-content text-black font-heading font-bold uppercase text-sm tracking-widest px-4">
+                <span>Open 12 AM to 4 AM</span><span>•</span><span>Cashless Campus</span><span>•</span><span>Top-up Wallet at Canteen Counter</span><span>•</span><span>Hot Food Delivery</span><span>•</span>
+            </div>
+            <div class="marquee-content text-black font-heading font-bold uppercase text-sm tracking-widest px-4">
+                <span>Open 12 AM to 4 AM</span><span>•</span><span>Cashless Campus</span><span>•</span><span>Top-up Wallet at Canteen Counter</span><span>•</span><span>Hot Food Delivery</span><span>•</span>
+            </div>
+        </div>
+    </div>
+    <main class="max-w-7xl mx-auto px-6 pt-16 pb-24 relative z-10">
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-24">
+
+            <div class="space-y-8">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-lime-600/30 bg-lime-600/10 text-lime-600 dark:text-lime-400 text-xs font-bold tracking-wide uppercase">
+                    <span class="w-2 h-2 rounded-full bg-lime-600 animate-pulse"></span>
+                    Operational: 12 AM - 04 AM
+                </div>
+
+                <h1 class="text-6xl md:text-8xl font-bold tracking-tighter leading-[0.9] text-black dark:text-white">
+                    SURVIVING <br>
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-orange-600 to-red-600">THE</span> <br>
+                    SEMESTER?
+                </h1>
+
+                <p class="text-lg text-gray-600 dark:text-gray-400 max-w-md leading-relaxed">
+                    Don't let hunger ruin your GPA. Hot Maggi, spicy wraps, and beverages delivered straight to your hostel block in 15 mins
+                </p>
+
+                <div class="flex flex-wrap gap-4">
+                    <a href="menu_list" class="px-8 py-4 bg-black dark:bg-white text-white dark:text-black rounded-lg font-bold font-heading hover:bg-orange-500 dark:hover:bg-orange-500 dark:hover:text-white transition-colors flex items-center gap-2">
+                        View Menu <i class="fa-solid fa-arrow-right -rotate-45"></i>
+                    </a>
+                </div>
+
+                <div class="flex items-center gap-4 text-sm text-gray-500 dark:text-gray-400 pt-4">
+                    <div class="flex -space-x-3">
+                        <div class="w-8 h-8 rounded-full bg-gray-400 border-2 border-white dark:border-zinc-900"></div>
+                        <div class="w-8 h-8 rounded-full bg-gray-500 border-2 border-white dark:border-zinc-900"></div>
+                        <div class="w-8 h-8 rounded-full bg-gray-600 border-2 border-white dark:border-zinc-900"></div>
+                    </div>
+                    <p>120+ students ordered tonight</p>
+                </div>
+            </div>
+
+            <div class="relative">
+                <div class="grid grid-cols-2 gap-4">
+
+                    <div class="bento-card col-span-2 rounded-2xl relative overflow-hidden h-64 flex items-center justify-center group">
+                         <img src="static/item_photos/1765297376.jpg"
+                              class="absolute inset-0 w-full h-full object-cover opacity-80 group-hover:scale-105 transition-transform duration-700">
+                         <div class="absolute inset-0 bg-gradient-to-t from-zinc-100 via-zinc-100/40 dark:from-zinc-900 dark:via-zinc-900/40 to-transparent"></div>
+
+                         <div class="absolute top-0 right-0 p-4 opacity-10 text-6xl text-black dark:text-white font-black z-10 rotate-12">PIZZA</div>
+
+                         <div class="absolute bottom-6 left-6 z-20">
+                            <p class="text-orange-600 text-xs font-bold font-mono mb-1 tracking-widest uppercase">Bestseller</p>
+                            <h3 class="text-3xl font-bold text-black dark:text-white">Veggie Volcano Pizza</h3>
+                            <p class="text-zinc-700 dark:text-zinc-300 text-sm mt-1">Crispy crust, overloaded cheese.</p>
+                         </div>
+                    </div>
+
+                    <div class="bento-card p-6 rounded-2xl relative overflow-hidden h-48 group">
+                        <img src="static/photos/Food Delivery.jpg"
+                             class="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:scale-110 transition-transform duration-700" alt="Delivery Speed">
+                        <div class="absolute inset-0 bg-gradient-to-t from-zinc-100 via-zinc-100/50 dark:from-zinc-900 dark:via-zinc-900/50 to-transparent"></div>
+
+                        <div class="relative z-10 flex flex-col justify-between h-full">
+                            <div class="w-10 h-10 rounded-full bg-lime-600/20 text-lime-600 dark:text-lime-400 flex items-center justify-center backdrop-blur-sm">
+                                <i class="fa-solid fa-bolt"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-3xl font-bold font-heading text-black dark:text-white">15<span class="text-sm text-gray-700 dark:text-gray-300 ml-1">min</span></h3>
+                                <p class="text-gray-800 dark:text-gray-300 text-sm font-medium">Avg. Delivery Time</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bento-card p-6 rounded-2xl relative overflow-hidden h-48 border-orange-500/20 group">
+                         <img src="static/photos/Cash Less.jpg"
+                              class="absolute inset-0 w-full h-full object-cover opacity-40 group-hover:scale-110 transition-transform duration-700" alt="Digital Payment">
+                         <div class="absolute inset-0 bg-gradient-to-t from-zinc-100 via-zinc-100/60 to-zinc-100/20 dark:from-zinc-900 dark:via-zinc-900/60 dark:to-zinc-900/20"></div>
+
+                         <div class="relative z-10 flex flex-col justify-between h-full">
+                            <div class="flex justify-between items-start">
+                                <div class="w-10 h-10 rounded-full bg-orange-500/20 text-orange-600 flex items-center justify-center backdrop-blur-sm">
+                                    <i class="fa-solid fa-wallet"></i>
+                                </div>
+                                <span class="text-xs font-bold bg-orange-600 text-white px-2 py-1 rounded shadow-[0_0_10px_rgba(249,115,22,0.5)]">FAST</span>
+                            </div>
+                            <div>
+                                <p class="text-gray-700 dark:text-gray-300 text-xs uppercase tracking-wide font-bold">Cashless</p>
+                                <h3 class="text-lg font-bold text-black dark:text-white">Auto-Debit</h3>
+                            </div>
+                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="border-t border-black/10 dark:border-white/10 pt-12">
+            <div class="flex justify-between items-end mb-8">
+                <h2 class="text-3xl font-bold text-black dark:text-white">Trending Tonight</h2>
+                <a href="menu_list" class="text-orange-600 hover:text-black dark:hover:text-white transition-colors text-sm font-bold flex items-center gap-2">See full menu <i class="fa-solid fa-arrow-right"></i></a>
+            </div>
+
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+
+                <a href="#" class="bento-card p-4 rounded-xl group block">
+                    <div class="aspect-square bg-zinc-200 dark:bg-zinc-800 rounded-lg mb-4 relative overflow-hidden">
+                        <img src="static/item_photos/1765299842.jpg"
+                             class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" alt="Coffee">
+                    </div>
+                    <h4 class="font-bold text-lg text-black dark:text-white">Hot Chocolate</h4>
+                    <div class="flex justify-between items-center mt-2">
+                        <span class="text-gray-600 dark:text-gray-400 text-sm">₹70</span>
+                        <div class="w-6 h-6 rounded bg-black dark:bg-white text-white dark:text-black flex items-center justify-center text-xs"><i class="fa-solid fa-plus"></i></div>
+                    </div>
+                </a>
+
+                <a href="#" class="bento-card p-4 rounded-xl group block">
+                    <div class="aspect-square bg-zinc-200 dark:bg-zinc-800 rounded-lg mb-4 relative overflow-hidden">
+                        <img src="static/item_photos/1765298085.jpg"
+                             class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" alt="Burger">
+                    </div>
+                    <h4 class="font-bold text-lg text-black dark:text-white">Veg Beast Burger</h4>
+                    <div class="flex justify-between items-center mt-2">
+                        <span class="text-gray-600 dark:text-gray-400 text-sm">₹75</span>
+                         <div class="w-6 h-6 rounded bg-black dark:bg-white text-white dark:text-black flex items-center justify-center text-xs"><i class="fa-solid fa-plus"></i></div>
+                    </div>
+                </a>
+
+                <a href="#" class="bento-card p-4 rounded-xl group block">
+                    <div class="aspect-square bg-zinc-200 dark:bg-zinc-800 rounded-lg mb-4 relative overflow-hidden">
+                        <img src="static/item_photos/1765299293.jpg"
+                             class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" alt="Brownie">
+                    </div>
+                    <h4 class="font-bold text-lg text-black dark:text-white">Lava Brownie</h4>
+                    <div class="flex justify-between items-center mt-2">
+                        <span class="text-gray-600 dark:text-gray-400 text-sm">₹70</span>
+                         <div class="w-6 h-6 rounded bg-black dark:bg-white text-white dark:text-black flex items-center justify-center text-xs"><i class="fa-solid fa-plus"></i></div>
+                    </div>
+                </a>
+
+                <a href="#" class="bento-card p-4 rounded-xl group block">
+                    <div class="aspect-square bg-zinc-200 dark:bg-zinc-800 rounded-lg mb-4 relative overflow-hidden">
+                        <img src="static/item_photos/1765296551.jpg"
+                             class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" alt="Maggi">
+                    </div>
+                    <h4 class="font-bold text-lg text-black dark:text-white">Dhaba Maggi</h4>
+                    <div class="flex justify-between items-center mt-2">
+                        <span class="text-gray-600 dark:text-gray-400 text-sm">₹65</span>
+                         <div class="w-6 h-6 rounded bg-black dark:bg-white text-white dark:text-black flex items-center justify-center text-xs"><i class="fa-solid fa-plus"></i></div>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+    </main>
+
+    <footer class="border-t border-black/10 dark:border-white/10 bg-zinc-100 dark:bg-zinc-900 py-12 relative z-10 transition-colors duration-300">
+        <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="flex flex-col">
+                <span class="font-heading font-bold text-2xl text-black dark:text-white">Bunk<span class="text-gray-500">&</span>Bite</span>
+                <p class="text-gray-600 dark:text-gray-400 text-sm mt-1">Made for sleepless nights.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const htmlElement = document.documentElement;
+
+        // Check local storage or system preference on load
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            htmlElement.classList.add('dark');
+        } else {
+            htmlElement.classList.remove('dark');
+        }
+
+        // Toggle Logic
+        themeToggleBtn.addEventListener('click', () => {
+            if (htmlElement.classList.contains('dark')) {
+                htmlElement.classList.remove('dark');
+                localStorage.theme = 'light';
+            } else {
+                htmlElement.classList.add('dark');
+                localStorage.theme = 'dark';
+            }
+        });
+    </script>
+</body>
+</html>

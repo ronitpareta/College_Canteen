@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Bunk & Bite | Admin Profile</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <style>
+    /* Typography */
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+
+    :root {
+        --bg-main: #09090b; /* Zinc 950 */
+        --bg-card: #18181b; /* Zinc 900 */
+        --accent-lime: #d9f99d; /* Lime 200 */
+        --accent-orange: #fb923c; /* Orange 400 */
+        --text-main: #fafafa;
+        --text-muted: #a1a1aa;
+    }
+
+    body {
+        font-family: 'Inter', sans-serif;
+        background-color: var(--bg-main);
+        color: var(--text-main);
+        overflow-x: hidden;
+    }
+
+    h1, h2, h3, h4, .font-heading {
+        font-family: 'Space Grotesk', sans-serif;
+    }
+
+    /* Grain Texture */
+    .bg-grain {
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 50; opacity: 0.04;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: var(--bg-main); }
+    ::-webkit-scrollbar-thumb { background: #3f3f46; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #52525b; }
+
+    /* Bento Card */
+    .bento-card {
+        background-color: var(--bg-card);
+        border: 1px solid rgba(255,255,255,0.05);
+        transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+    }
+    .bento-card:hover {
+        border-color: rgba(255,255,255,0.15);
+        box-shadow: 0 20px 40px -10px rgba(0,0,0,0.5);
+    }
+
+    /* Sidebar Active */
+    .sidebar-active {
+        background-color: rgba(255, 255, 255, 0.05);
+        border-right: 2px solid var(--accent-orange);
+        color: white !important;
+    }
+
+    /* Input Styling */
+    .tech-input {
+        background: rgba(0, 0, 0, 0.3);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        color: white;
+        transition: all 0.3s ease;
+        font-family: 'Inter', sans-serif;
+    }
+    .tech-input:focus {
+        border-color: var(--accent-orange);
+        box-shadow: 0 0 0 1px rgba(251, 146, 60, 0.2);
+        outline: none;
+        background: rgba(255, 255, 255, 0.05);
+    }
+
+    /* File Input */
+    .file-input::file-selector-button {
+        background-color: #27272a;
+        color: #d4d4d8;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        padding: 0.3rem 0.8rem;
+        border-radius: 0.375rem;
+        margin-right: 1rem;
+        cursor: pointer;
+        transition: all 0.2s;
+        font-family: 'Space Grotesk', sans-serif;
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+    .file-input::file-selector-button:hover {
+        background-color: var(--accent-orange);
+        color: black;
+        border-color: var(--accent-orange);
+    }
+
+    /* Animations */
+    @keyframes float-blob {
+        0% { transform: translate(0px, 0px) scale(1); }
+        33% { transform: translate(30px, -50px) scale(1.1); }
+        66% { transform: translate(-20px, 20px) scale(0.9); }
+        100% { transform: translate(0px, 0px) scale(1); }
+    }
+    .animate-blob { animation: float-blob 10s infinite ease-in-out; }
+  </style>
+</head>
+
+<body class="flex min-h-screen relative selection:bg-orange-500 selection:text-white">
+
+  <div class="bg-grain"></div>
+  <div class="fixed top-0 left-0 w-full h-full overflow-hidden -z-10">
+      <div class="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-orange-600/10 rounded-full blur-[100px] animate-blob"></div>
+      <div class="absolute bottom-[-10%] right-[-10%] w-[500px] h-[500px] bg-lime-500/5 rounded-full blur-[100px] animate-blob" style="animation-delay: 2s"></div>
+  </div>
+
+  <aside class="w-20 lg:w-64 bg-zinc-950/80 border-r border-white/5 backdrop-blur-md flex flex-col fixed h-full z-50 overflow-y-auto transition-all duration-300">
+    <div class="p-6 flex items-center gap-3 shrink-0 h-20 border-b border-white/5">
+      <div class="w-8 h-8 bg-white text-black flex items-center justify-center rounded font-bold text-lg">B</div>
+      <span class="hidden lg:block font-heading font-bold text-xl tracking-tight text-white">Bunk<span class="text-gray-500">&</span>Bite</span>
+    </div>
+
+    <nav class="flex-grow mt-6 px-3 pb-20 space-y-6">
+
+      <div>
+        <p class="hidden lg:block text-[10px] font-bold text-gray-500 uppercase px-4 mb-2 tracking-widest font-heading">Operations</p>
+        <a href="show_orders" class="flex items-center gap-3 p-3 rounded text-gray-400 hover:text-white hover:bg-white/5 transition group">
+          <i class="fas fa-th-large w-5 group-hover:text-orange-400 transition"></i>
+          <span class="hidden lg:block font-medium text-sm">Dashboard</span>
+        </a>
+        <a href="add_items" class="flex items-center gap-3 p-3 rounded text-gray-400 hover:text-white hover:bg-white/5 transition group">
+          <i class="fas fa-plus-circle w-5 group-hover:text-orange-400 transition"></i>
+          <span class="hidden lg:block font-medium text-sm">Add Menu Item</span>
+        </a>
+        <a href="show_items" class="flex items-center gap-3 p-3 rounded text-gray-400 hover:text-white hover:bg-white/5 transition group">
+          <i class="fas fa-utensils w-5 group-hover:text-orange-400 transition"></i>
+          <span class="hidden lg:block font-medium text-sm">Manage Menu</span>
+        </a>
+      </div>
+
+      <div>
+        <p class="hidden lg:block text-[10px] font-bold text-gray-500 uppercase px-4 mb-2 tracking-widest font-heading">User Mgmt</p>
+        <a href="admin_reg" class="flex items-center gap-3 p-3 rounded text-gray-400 hover:text-white hover:bg-white/5 transition group">
+          <i class="fas fa-user-shield w-5 group-hover:text-lime-400 transition"></i>
+          <span class="hidden lg:block font-medium text-sm">Add Admin</span>
+        </a>
+        <a href="student_reg_admin" class="flex items-center gap-3 p-3 rounded text-gray-400 hover:text-white hover:bg-white/5 transition group">
+          <i class="fas fa-user-plus w-5 group-hover:text-lime-400 transition"></i>
+          <span class="hidden lg:block font-medium text-sm">Add Student</span>
+        </a>
+        <a href="show_students" class="flex items-center gap-3 p-3 rounded text-gray-400 hover:text-white hover:bg-white/5 transition group">
+          <i class="fas fa-users w-5 group-hover:text-lime-400 transition"></i>
+          <span class="hidden lg:block font-medium text-sm">Manage Students</span>
+        </a>
+      </div>
+
+      <div>
+        <p class="hidden lg:block text-[10px] font-bold text-gray-500 uppercase px-4 mb-2 tracking-widest font-heading">Account</p>
+        <a href="admin_profile" class="sidebar-active flex items-center gap-3 p-3 rounded text-gray-400 hover:text-white hover:bg-white/5 transition group">
+          <i class="fas fa-id-card w-5 group-hover:text-white transition"></i>
+          <span class="hidden lg:block font-medium text-sm">Manage Profile</span>
+        </a>
+        <a href="change_password" class="flex items-center gap-3 p-3 rounded text-gray-400 hover:text-white hover:bg-white/5 transition group">
+          <i class="fas fa-key w-5 group-hover:text-white transition"></i>
+          <span class="hidden lg:block font-medium text-sm">Change Password</span>
+        </a>
+        <a href="logout" class="flex items-center gap-3 p-3 rounded text-red-400/70 hover:bg-red-500/10 hover:text-red-400 transition group mt-2">
+          <i class="fas fa-sign-out-alt w-5"></i>
+          <span class="hidden lg:block font-medium text-sm">Logout</span>
+        </a>
+      </div>
+
+    </nav>
+  </aside>
+
+  <main class="ml-20 lg:ml-64 flex-grow relative">
+
+    <header class="h-20 bg-zinc-950/80 backdrop-blur-md border-b border-white/5 flex items-center justify-between px-8 sticky top-0 z-40">
+      <div class="flex items-center gap-2 text-sm">
+        <i class="fas fa-user-circle text-orange-500"></i>
+        <span class="text-gray-400">Account /</span>
+        <span class="text-white font-bold tracking-wide">Manage Profile</span>
+      </div>
+
+      <div class="flex items-center gap-6">
+        <div class="hidden md:flex items-center gap-2 px-3 py-1 rounded bg-lime-400/10 border border-lime-400/20">
+          <span class="relative flex h-2 w-2">
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-lime-400 opacity-75"></span>
+            <span class="relative inline-flex rounded-full h-2 w-2 bg-lime-500"></span>
+          </span>
+          <span class="text-[10px] font-bold text-lime-400 uppercase tracking-wider">System Online</span>
+        </div>
+        <div class="h-8 w-px bg-white/10 mx-2"></div>
+        <div class="flex items-center gap-3 text-right">
+          <div class="hidden md:block">
+            <div class="text-sm font-bold text-white font-heading">Admin Portal</div>
+            <div class="text-xs text-gray-500">Bunk & Bite v2.0</div>
+          </div>
+          <div class="w-10 h-10 rounded bg-zinc-900 border border-white/10 flex items-center justify-center text-gray-300">
+            <i class="fas fa-user-shield"></i>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="p-6 md:p-10 max-w-7xl mx-auto min-h-[85vh]">
+
+      <h2 class="text-4xl font-bold font-heading text-white tracking-tight mb-8">My <span class="text-orange-500">Profile</span></h2>
+
+      <div class="grid grid-cols-1 xl:grid-cols-3 gap-8">
+
+        <div class="xl:col-span-1">
+            <div class="bento-card p-6 rounded-xl shadow-xl relative overflow-hidden text-center">
+                <div class="absolute top-0 left-0 w-full h-24 bg-gradient-to-br from-orange-600/20 to-lime-600/20"></div>
+
+                <div class="relative mt-4">
+
+                    {% if photo == 'nophoto' or not photo %}
+                        <div class="w-32 h-32 mx-auto rounded-full border-4 border-[#18181b] bg-zinc-800 flex items-center justify-center text-gray-500 shadow-xl mb-6">
+                            <i class="fas fa-user-shield text-4xl"></i>
+                        </div>
+
+                        <form action="upload_admin_photo" enctype="multipart/form-data" method="post" class="space-y-4">
+                            <div class="p-4 border-2 border-dashed border-white/10 rounded-xl hover:border-orange-500/50 hover:text-orange-400 transition-colors group">
+                                <label class="block mb-2 text-[10px] font-bold text-gray-500 group-hover:text-orange-400 uppercase tracking-widest">Update Avatar</label>
+                                <input type="file" name="F1" class="file-input block w-full text-xs text-gray-400"/>
+                            </div>
+                            <button type="submit" class="w-full py-2 bg-zinc-800 border border-white/10 rounded text-white text-xs font-bold uppercase tracking-wider hover:bg-white hover:text-black transition shadow-lg">
+                                <i class="fas fa-upload mr-2"></i> Upload
+                            </button>
+                        </form>
+
+                    {% else %}
+                        <div class="relative group mx-auto w-32 h-32 mb-4">
+                             <img src="../static/photos/{{ photo }}" class="w-full h-full rounded-full border-4 border-[#18181b] object-cover shadow-xl grayscale-[30%] group-hover:grayscale-0 transition duration-300"/>
+                             <form action="delete_admin_photo" method="get" class="absolute bottom-0 right-0">
+                                <button type="submit" class="w-8 h-8 bg-red-500 rounded-full text-white flex items-center justify-center hover:bg-red-600 transition shadow-lg border-2 border-[#18181b]" title="Remove Photo">
+                                    <i class="fas fa-trash-alt text-xs"></i>
+                                </button>
+                             </form>
+                        </div>
+                        <h3 class="text-xl font-bold font-heading text-white">Administrator</h3>
+                        <p class="text-gray-500 text-xs uppercase tracking-widest font-bold">System Operator</p>
+                    {% endif %}
+
+                </div>
+            </div>
+
+            <div class="mt-8 p-6 rounded-xl border border-red-500/20 bg-red-500/5">
+                <h4 class="text-red-400 font-bold text-xs uppercase tracking-widest mb-2 font-heading"><i class="fas fa-exclamation-triangle mr-2"></i> Danger Zone</h4>
+                <p class="text-gray-500 text-xs mb-4">Deleting your account is permanent. Be careful.</p>
+                {% if data %}
+                <form method="post" action="delete_admin" onsubmit="return confirm('WARNING: Are you sure you want to delete your admin account? This action cannot be undone.')">
+                    <input type="hidden" name="H1" value="{{ data[3] }}"/>
+                    <button type="submit" class="w-full py-2 bg-transparent border border-red-500/30 text-red-500 hover:bg-red-500 hover:text-white rounded text-xs font-bold uppercase tracking-wider transition">
+                        Delete Account
+                    </button>
+                </form>
+                {% endif %}
+            </div>
+        </div>
+
+
+        <div class="xl:col-span-2">
+            <div class="bento-card p-8 rounded-xl shadow-xl border-t border-white/5 animate-up">
+
+                <div class="flex items-center justify-between mb-8 pb-4 border-b border-white/5">
+                    <div>
+                         <h3 class="text-xl font-bold text-white font-heading">Profile Details</h3>
+                         <p class="text-gray-400 text-sm mt-1">Update your personal information.</p>
+                    </div>
+                    <div class="w-10 h-10 rounded bg-zinc-800 flex items-center justify-center text-orange-500">
+                         <i class="fas fa-pen"></i>
+                    </div>
+                </div>
+
+                {% if data %}
+                <form method="post" action="admin_profile1" class="space-y-6">
+
+                    <div>
+                        <label class="block mb-2 text-gray-400 text-xs font-bold uppercase tracking-widest font-heading">Full Name</label>
+                        <div class="relative">
+                            <span class="absolute left-4 top-3.5 text-gray-500"><i class="fas fa-user"></i></span>
+                            <input type="text" name="T1" id="T1" value="{{data[0]}}"
+                                class="tech-input w-full rounded py-3 pl-10 pr-4 text-sm text-white">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block mb-2 text-gray-400 text-xs font-bold uppercase tracking-widest font-heading">Contact Number</label>
+                            <div class="relative">
+                                <span class="absolute left-4 top-3.5 text-gray-500"><i class="fas fa-phone"></i></span>
+                                <input type="text" name="T3" id="T3" value="{{data[2]}}"
+                                    class="tech-input w-full rounded py-3 pl-10 pr-4 text-sm text-white">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block mb-2 text-gray-400 text-xs font-bold uppercase tracking-widest font-heading">Email (Read Only)</label>
+                            <div class="relative">
+                                <span class="absolute left-4 top-3.5 text-gray-600"><i class="fas fa-envelope"></i></span>
+                                <input type="text" value="{{data[3]}}" readonly
+                                    class="tech-input w-full rounded py-3 pl-10 pr-4 text-sm text-gray-500 cursor-not-allowed">
+                                <span class="absolute right-4 top-3.5 text-gray-600"><i class="fas fa-lock"></i></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block mb-2 text-gray-400 text-xs font-bold uppercase tracking-widest font-heading">Address</label>
+                        <div class="relative">
+                            <span class="absolute left-4 top-3.5 text-gray-500"><i class="fas fa-map-marker-alt"></i></span>
+                            <input type="text" name="T2" id="T2" value="{{data[1]}}"
+                                class="tech-input w-full rounded py-3 pl-10 pr-4 text-sm text-white">
+                        </div>
+                    </div>
+
+                    <div class="pt-4 flex gap-4">
+                        <button type="submit"
+                            class="flex-1 py-3.5 bg-orange-500 hover:bg-orange-400 text-black font-bold font-heading uppercase tracking-wide rounded transition-all transform hover:scale-[1.02] active:scale-[0.98] shadow-lg flex items-center justify-center gap-2">
+                            <i class="fas fa-save"></i> Save Changes
+                        </button>
+
+                        <a href="show_orders" class="px-6 py-3.5 rounded border border-white/10 hover:bg-zinc-800 text-gray-400 hover:text-white transition font-bold font-heading text-xs uppercase tracking-wide flex items-center justify-center">
+                            Cancel
+                        </a>
+                    </div>
+                </form>
+                {% endif %}
+
+                {% if msg %}
+                <div class="mt-6 p-4 rounded border border-lime-500/20 bg-lime-500/10 text-center animate-pulse">
+                    <span class="text-lime-400 font-bold text-xs uppercase tracking-wide flex items-center justify-center gap-2"><i class="fas fa-check-circle"></i> {{msg}}</span>
+                </div>
+                {% endif %}
+
+            </div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+</body>
+</html>

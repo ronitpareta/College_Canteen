@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bunk & Bite | Menu</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        zinc: { 950: '#09090b', 900: '#18181b' }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* Typography */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+
+        :root {
+            /* Light Mode Defaults */
+            --bg-main: #ffffff;
+            --bg-card: #f4f4f5;
+            --text-main: #09090b;
+            --text-muted: #71717a;
+            --nav-bg: rgba(255, 255, 255, 0.8);
+            --border-color: rgba(0,0,0,0.05);
+        }
+
+        /* Dark Mode Overrides */
+        .dark {
+            --bg-main: #09090b;
+            --bg-card: #18181b;
+            --text-main: #fafafa;
+            --text-muted: #a1a1aa;
+            --nav-bg: rgba(9, 9, 11, 0.8);
+            --border-color: rgba(255,255,255,0.1);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            overflow-x: hidden;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        h1, h2, h3, h4, .font-heading {
+            font-family: 'Space Grotesk', sans-serif;
+        }
+
+        /* Grain Texture */
+        .bg-grain {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 50; opacity: 0.05;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg-main); }
+        ::-webkit-scrollbar-thumb { background: #52525b; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #71717a; }
+
+        /* Bento Card */
+        .bento-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+        .bento-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(249, 115, 22, 0.3);
+            box-shadow: 0 10px 30px -5px rgba(0,0,0,0.1);
+        }
+
+        /* Card Animation */
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .animate-card { animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+    </style>
+</head>
+<body class="selection:bg-orange-500 selection:text-white relative">
+
+    <div class="bg-grain"></div>
+
+    <nav class="fixed w-full z-40 top-0 border-b border-black/5 dark:border-white/5 bg-white/80 dark:bg-zinc-950/80 backdrop-blur-md transition-colors duration-300">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex justify-between items-center">
+
+            <a href="/" class="flex items-center gap-2 group">
+                <div class="w-8 h-8 bg-black dark:bg-white text-white dark:text-black flex items-center justify-center rounded font-bold text-lg transform group-hover:rotate-12 transition-transform">B</div>
+                <span class="font-heading font-bold text-xl tracking-tight text-black dark:text-white">Bunk<span class="text-gray-500">&</span>Bite</span>
+            </a>
+
+            <div class="flex items-center gap-4">
+
+                <a href="/" class="text-sm font-bold text-zinc-500 hover:text-black dark:hover:text-white transition-colors flex items-center gap-2 group">
+                    <i class="fa-solid fa-arrow-left group-hover:-translate-x-1 transition-transform"></i>
+                    <span>Return</span>
+                </a>
+
+                <div class="h-4 w-px bg-zinc-300 dark:bg-zinc-800"></div>
+
+                <button id="theme-toggle" class="w-9 h-9 rounded-full bg-zinc-100 dark:bg-zinc-800 text-zinc-800 dark:text-yellow-400 hover:scale-110 transition-all flex items-center justify-center border border-zinc-200 dark:border-zinc-700">
+                    <i class="fas fa-sun block dark:hidden"></i>
+                    <i class="fas fa-moon hidden dark:block"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-7xl mx-auto px-6 pt-12 mt-20 pb-24 relative z-10">
+
+        <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
+            <div>
+              <h2 class="text-3xl font-bold font-heading text-black dark:text-white tracking-tight">Full <span class="text-orange-500">Menu</span></h2>
+              <p class="text-gray-600 dark:text-gray-400 mt-2 text-sm">Freshly prepared for late-night cravings.</p>
+            </div>
+        </div>
+
+        <div class="bg-orange-500/10 dark:bg-orange-500/5 border border-orange-500/20 rounded-lg p-4 mb-10 flex items-start md:items-center gap-4">
+            <div class="w-10 h-10 rounded-full bg-orange-100 dark:bg-orange-900/30 flex items-center justify-center shrink-0 text-orange-600 dark:text-orange-500">
+                <i class="fas fa-lock"></i>
+            </div>
+            <div>
+                <h4 class="font-bold text-black dark:text-white font-heading text-sm">Guest View Mode</h4>
+                <p class="text-gray-600 dark:text-gray-400 text-sm mt-0.5">
+                    Please <a href="login" class="text-orange-600 dark:text-orange-500 font-bold underline hover:no-underline">login to your account</a> to add items to your tray and place an order.
+                </p>
+            </div>
+        </div>
+
+        {% if data %}
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {% for row in data %}
+            <div class="group bento-card rounded-xl overflow-hidden hover:-translate-y-2 transition-all duration-300 flex flex-col h-full animate-card"
+                 style="animation-delay: {{ loop.index * 0.05 }}s">
+
+                <div class="relative h-56 overflow-hidden bg-zinc-200 dark:bg-zinc-800">
+                    <img src="{{ url_for('static', filename='item_photos/' ~ row[4]) }}"
+                         class="w-full h-full object-cover grayscale-[30%] group-hover:grayscale-0 transform group-hover:scale-110 transition duration-700"
+                         alt="{{ row[1] }}">
+
+                    <div class="absolute inset-0 bg-gradient-to-t from-zinc-900/80 via-transparent to-transparent opacity-60"></div>
+
+                    <span class="absolute top-4 left-4 bg-white/90 dark:bg-zinc-950/90 backdrop-blur border border-black/5 dark:border-white/10 text-black dark:text-white text-[10px] font-bold px-3 py-1.5 rounded uppercase tracking-wider font-heading">
+                        {{ row[3] }}
+                    </span>
+
+                    {% if row[5]=='in_stock' %}
+                        <span class="absolute top-4 right-4 bg-lime-400 text-black text-[10px] font-bold px-2 py-1 rounded shadow-lg">
+                             READY
+                        </span>
+                    {% else %}
+                        <span class="absolute top-4 right-4 bg-red-600 text-white text-[10px] font-bold px-2 py-1 rounded">
+                            SOLD OUT
+                        </span>
+                    {% endif %}
+                </div>
+
+                <div class="p-5 flex flex-col flex-grow justify-between relative z-10 bg-transparent">
+                    <div>
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="text-black dark:text-white font-heading font-bold text-lg leading-tight">{{ row[1] }}</h3>
+                        </div>
+                        <p class="text-gray-700 dark:text-gray-300 font-mono font-bold text-xl">₹{{ row[2] }}</p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="h-96 bento-card rounded-xl flex flex-col items-center justify-center text-center p-8 border-dashed border-2 border-black/10 dark:border-white/10">
+           <div class="w-24 h-24 rounded-full bg-zinc-200 dark:bg-zinc-800 flex items-center justify-center mb-6">
+               <i class="fas fa-moon text-5xl text-gray-400 dark:text-gray-600"></i>
+           </div>
+           <h3 class="text-2xl font-bold text-black dark:text-white mb-2 font-heading">Kitchen Closed</h3>
+           <p class="text-gray-500 dark:text-gray-400 max-w-md">No menu items are currently available. Check back at 12 AM.</p>
+        </div>
+        {% endif %}
+
+    </main>
+
+    <footer class="border-t border-black/10 dark:border-white/10 bg-zinc-100 dark:bg-zinc-900 py-12 relative z-10 transition-colors duration-300">
+        <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="flex flex-col">
+                <span class="font-heading font-bold text-2xl text-black dark:text-white">Bunk<span class="text-gray-500">&</span>Bite</span>
+                <p class="text-gray-600 dark:text-gray-400 text-sm mt-1">Made for sleepless nights.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const htmlElement = document.documentElement;
+
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            htmlElement.classList.add('dark');
+        } else {
+            htmlElement.classList.remove('dark');
+        }
+
+        themeToggleBtn.addEventListener('click', () => {
+            if (htmlElement.classList.contains('dark')) {
+                htmlElement.classList.remove('dark');
+                localStorage.theme = 'light';
+            } else {
+                htmlElement.classList.add('dark');
+                localStorage.theme = 'dark';
+            }
+        });
+    </script>
+</body>
+</html>

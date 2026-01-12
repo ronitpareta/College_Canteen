@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Bunk & Bite | Your Tray</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <style>
+    /* Typography */
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+
+    :root {
+        --bg-main: #09090b; /* Zinc 950 */
+        --bg-card: #18181b; /* Zinc 900 */
+        --accent-lime: #d9f99d; /* Lime 200 */
+        --accent-orange: #fb923c; /* Orange 400 */
+        --text-main: #fafafa;
+        --text-muted: #a1a1aa;
+    }
+
+    body {
+        font-family: 'Inter', sans-serif;
+        background-color: var(--bg-main);
+        color: var(--text-main);
+        overflow-x: hidden;
+    }
+
+    h1, h2, h3, h4, .font-heading {
+        font-family: 'Space Grotesk', sans-serif;
+    }
+
+    /* Grain & Scrollbar */
+    .bg-grain {
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 50; opacity: 0.04;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    }
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: var(--bg-main); }
+    ::-webkit-scrollbar-thumb { background: #3f3f46; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #52525b; }
+
+    /* Bento Card */
+    .bento-card {
+        background-color: var(--bg-card);
+        border: 1px solid rgba(255,255,255,0.05);
+        transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+    }
+    .bento-card:hover {
+        border-color: rgba(255,255,255,0.15);
+        box-shadow: 0 20px 40px -10px rgba(0,0,0,0.5);
+    }
+
+    /* Sidebar Active */
+    .sidebar-active {
+        background-color: rgba(255, 255, 255, 0.05);
+        border-right: 2px solid var(--accent-orange);
+        color: white !important;
+    }
+
+    /* Table Styles */
+    .tech-table th {
+        border-bottom: 1px solid rgba(255,255,255,0.1);
+        color: #71717a; /* Zinc 500 */
+        font-family: 'Space Grotesk', sans-serif;
+    }
+    .tech-table td {
+        border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+
+    /* Animation */
+    @keyframes fadeUp {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-up {
+        animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    @keyframes float-blob {
+        0% { transform: translate(0px, 0px) scale(1); }
+        33% { transform: translate(30px, -50px) scale(1.1); }
+        66% { transform: translate(-20px, 20px) scale(0.9); }
+        100% { transform: translate(0px, 0px) scale(1); }
+    }
+    .animate-blob { animation: float-blob 10s infinite ease-in-out; }
+  </style>
+</head>
+
+<body class="flex min-h-screen relative selection:bg-orange-500 selection:text-white">
+
+  <div class="bg-grain"></div>
+  <div class="fixed top-0 left-0 w-full h-full overflow-hidden -z-10">
+      <div class="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-orange-600/10 rounded-full blur-[100px] animate-blob"></div>
+      <div class="absolute bottom-[-10%] right-[-10%] w-[500px] h-[500px] bg-lime-500/5 rounded-full blur-[100px] animate-blob" style="animation-delay: 2s"></div>
+  </div>
+
+  <aside class="w-20 lg:w-64 bg-zinc-950/80 border-r border-white/5 backdrop-blur-md flex flex-col fixed h-full z-40 overflow-y-auto transition-all duration-300">
+    <div class="p-6 flex items-center gap-3 shrink-0 h-20 border-b border-white/5">
+      <div class="w-8 h-8 bg-white text-black flex items-center justify-center rounded font-bold text-lg">B</div>
+      <span class="hidden lg:block font-heading font-bold text-xl tracking-tight text-white">Bunk<span class="text-gray-500">&</span>Bite</span>
+    </div>
+
+    <nav class="flex-grow mt-6 px-3 pb-20 space-y-2">
+      <div>
+        <p class="hidden lg:block text-[10px] font-bold text-gray-500 uppercase px-4 mb-2 tracking-widest font-heading">Menu</p>
+        <a href="/user_home" class="flex items-center gap-3 p-3 rounded text-gray-400 hover:text-white hover:bg-white/5 transition group">
+          <i class="fas fa-book-open w-5 group-hover:text-orange-400 transition"></i>
+          <span class="hidden lg:block font-medium text-sm">Browse Menu</span>
+        </a>
+        <a href="/my_orders" class="flex items-center gap-3 p-3 rounded text-gray-400 hover:text-white hover:bg-white/5 transition group">
+          <i class="fas fa-receipt w-5 group-hover:text-lime-400 transition"></i>
+          <span class="hidden lg:block font-medium text-sm">My Orders</span>
+        </a>
+      </div>
+
+      <div class="mt-8">
+        <p class="hidden lg:block text-[10px] font-bold text-gray-500 uppercase px-4 mb-2 tracking-widest font-heading">Profile</p>
+        <a href="/my_profile" class="flex items-center gap-3 p-3 rounded text-gray-400 hover:text-white hover:bg-white/5 transition group">
+          <i class="fas fa-user-circle w-5 group-hover:text-white transition"></i>
+          <span class="hidden lg:block font-medium text-sm">My Profile</span>
+        </a>
+        <a href="/logout" class="flex items-center gap-3 p-3 rounded text-red-400/70 hover:bg-red-500/10 hover:text-red-400 transition group mt-2">
+          <i class="fas fa-sign-out-alt w-5"></i>
+          <span class="hidden lg:block font-medium text-sm">Logout</span>
+        </a>
+      </div>
+    </nav>
+  </aside>
+
+  <main class="ml-20 lg:ml-64 flex-grow relative">
+
+    <header class="h-20 bg-zinc-950/80 backdrop-blur-md border-b border-white/5 flex items-center justify-between px-8 sticky top-0 z-30">
+      <div class="flex items-center gap-2 text-sm">
+        <span class="text-orange-500 font-bold">///</span>
+        <span class="text-gray-400">Your Tray</span>
+      </div>
+
+      <div class="flex items-center gap-6">
+        <div class="flex items-center gap-3 text-right">
+          <div class="hidden md:block">
+            <div class="text-sm font-bold text-white font-heading">{{ username }}</div>
+            <div class="text-xs text-gray-500 font-medium">Student Account</div>
+          </div>
+          <div class="w-10 h-10 rounded bg-zinc-900 border border-white/10 flex items-center justify-center text-gray-200">
+            <i class="fas fa-user"></i>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="p-6 md:p-10 max-w-6xl mx-auto pb-32">
+
+      {% if cart_items %}
+
+      <div class="mb-8 bento-card rounded-xl p-8 relative overflow-hidden animate-up">
+
+        <div class="flex flex-col md:flex-row justify-between items-center gap-6 relative z-10">
+            <div class="flex items-center gap-5 w-full md:w-auto">
+                <div class="w-12 h-12 rounded bg-zinc-800 flex items-center justify-center text-gray-400 border border-white/5">
+                    <i class="fas fa-wallet text-xl"></i>
+                </div>
+                <div>
+                    <p class="text-[10px] text-gray-500 uppercase font-bold tracking-widest mb-1 font-heading">Wallet Balance</p>
+                    <p class="text-3xl font-bold text-white font-mono">₹{{ balance }}</p>
+                </div>
+            </div>
+
+            <div class="h-12 w-px bg-white/10 hidden md:block"></div>
+
+            <div class="flex items-center gap-5 w-full md:w-auto">
+                <div class="w-12 h-12 rounded bg-orange-500/10 flex items-center justify-center text-orange-500 border border-orange-500/20">
+                    <i class="fas fa-receipt text-xl"></i>
+                </div>
+                <div>
+                    <p class="text-[10px] text-orange-500/70 uppercase font-bold tracking-widest mb-1 font-heading">Cart Total</p>
+                    <p class="text-3xl font-bold text-orange-500 font-mono">₹<span id="grand-total">{{ total_amount }}</span></p>
+                </div>
+            </div>
+        </div>
+
+        {% if not can_place %}
+        <div class="mt-8 p-4 bg-red-900/20 border border-red-500/30 rounded flex items-center gap-3 text-red-400 text-sm animate-pulse">
+            <i class="fas fa-exclamation-triangle"></i>
+            <span class="font-bold">Insufficient funds. Please add money via Profile.</span>
+        </div>
+        {% endif %}
+      </div>
+
+      <div class="bento-card rounded-xl overflow-hidden mb-10 animate-up" style="animation-delay: 0.1s;">
+        <table class="w-full text-left border-collapse tech-table">
+            <thead>
+                <tr class="text-xs uppercase tracking-widest bg-zinc-900/50">
+                    <th class="py-4 px-6">Item Details</th>
+                    <th class="py-4 px-6 text-center">Qty</th>
+                    <th class="py-4 px-6 text-right">Price</th>
+                    <th class="py-4 px-6 text-right">Subtotal</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-white/5">
+                {% for item in cart_items %}
+                <tr class="group hover:bg-zinc-800/30 transition-colors" id="row-{{ item.item_id }}">
+                    <td class="py-4 px-6">
+                        <div class="flex items-center gap-4">
+                            <img src="{{ url_for('static', filename='item_photos/' ~ item.photo) }}"
+                                 class="w-16 h-16 rounded object-cover grayscale-[30%] group-hover:grayscale-0 transition-all duration-300 bg-zinc-800"
+                                 alt="Food Image">
+                            <div>
+                                <h3 class="font-bold text-white text-lg font-heading leading-tight">{{ item.name }}</h3>
+                                <span class="inline-block mt-1 px-2 py-0.5 rounded bg-white/5 text-[10px] text-gray-400 font-bold uppercase tracking-wider border border-white/5">
+                                    {{ item.type }}
+                                </span>
+                            </div>
+                        </div>
+                    </td>
+
+                    <td class="py-4 px-6">
+                        <div class="flex items-center justify-center gap-3">
+
+
+                            <span id="qty-{{ item.item_id }}" class="font-mono font-bold text-white text-lg w-6 text-center">
+                                {{ item.quantity }}
+                            </span>
+
+
+                        </div>
+                    </td>
+
+                    <td class="py-4 px-6 text-right text-gray-400 font-mono text-sm">
+                        ₹{{ item.price }}
+                    </td>
+                    <td class="py-4 px-6 text-right font-bold text-white text-lg font-mono">
+                        ₹<span id="subtotal-{{ item.item_id }}">{{ item.subtotal }}</span>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+      </div>
+
+      <div class="flex flex-col md:flex-row gap-5 items-center justify-end animate-up" style="animation-delay: 0.2s;">
+          <a href="/user_home" class="px-8 py-4 rounded-xl border border-white/10 text-gray-400 font-bold hover:bg-zinc-800 hover:text-white transition-all duration-300 flex items-center gap-2">
+              <i class="fas fa-arrow-left"></i> Add More Items
+          </a>
+
+          <form method="POST" action="/order" class="w-full md:w-auto" id="order-form">
+            {% for item in cart_items %}
+            <div class="hidden-inputs-{{ item.item_id }}">
+                <input type="hidden" value="{{ item.name }}" name="food_name"/>
+                <input type="hidden" value="{{ item.quantity }}" name="quantity" id="input-qty-{{ item.item_id }}"/>
+                <input type="hidden" value="{{ item.subtotal }}" name="total_price" id="input-total-{{ item.item_id }}"/>
+                <input type="hidden" value="{{ item.type }}" name="type"/>
+                <input type="hidden" value="{{ item.item_id }}" name="item_id"/>
+                <input type="hidden" value="{{ id }}" name="st_id"/>
+            </div>
+            {% endfor %}
+
+            <button type="submit"
+                {% if not can_place %}
+                disabled
+                class="w-full md:w-auto px-12 py-4 bg-zinc-800 border border-white/10 text-gray-500 font-bold rounded-xl cursor-not-allowed flex items-center justify-center gap-2"
+                {% else %}
+                class="w-full md:w-auto px-12 py-4 bg-orange-500 hover:bg-orange-400 text-black font-bold rounded-xl shadow-[0_0_30px_rgba(0,0,0,0.3)] hover:scale-105 active:scale-95 transition-all duration-300 flex items-center justify-center gap-2 border border-orange-400 font-heading tracking-wide"
+                {% endif %}>
+                <span>CONFIRM ORDER</span>
+                <i class="fas fa-arrow-right"></i>
+            </button>
+          </form>
+      </div>
+
+      {% else %}
+
+      <div class="min-h-[60vh] flex flex-col items-center justify-center text-center bento-card rounded-xl p-10 border-dashed border-2 border-white/10">
+          <div class="w-24 h-24 bg-zinc-800 rounded-full flex items-center justify-center mb-6">
+              <i class="fas fa-shopping-basket text-4xl text-gray-600"></i>
+          </div>
+          <h2 class="text-3xl font-bold font-heading text-white mb-2">Tray Empty</h2>
+          <p class="text-gray-500 mb-8 max-w-md">Looks like you haven't added anything yet.</p>
+          <a href="/user_home" class="px-8 py-3 bg-white text-black hover:bg-gray-200 rounded font-bold transition-all duration-300">
+              Browse Menu
+          </a>
+      </div>
+
+      {% endif %}
+
+    </div>
+  </main>
+
+  <script>
+      // The updateTrayItem function now only relies on server logic or page reload for total updates.
+      // The client-side +/- functionality has been removed.
+      function updateTrayItem(itemId, action, price) {
+          // This function is now effectively disabled or would need a full page reload/AJAX to update the cart data on the server
+          // since the buttons that called it are gone.
+          console.warn("Client-side quantity modification is disabled for item:", itemId);
+      }
+  </script>
+</body>
+</html>

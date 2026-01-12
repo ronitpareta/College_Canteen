@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Delicious Bites - Restaurant</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+  />
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #FFECD2 0%, #FFAB76 100%);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    .navbar {
+      backdrop-filter: blur(10px);
+      background: rgba(255, 255, 255, 0.8);
+      border-bottom: 1px solid rgba(255, 171, 118, 0.7);
+      transition: all 0.3s ease;
+    }
+
+    .navbar.scrolled {
+      background: rgba(255, 171, 118, 0.95);
+      backdrop-filter: blur(15px);
+    }
+
+    .nav-item {
+      position: relative;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: #bf360c;
+    }
+
+    .nav-item i { min-width: 18px; text-align: center; }
+
+    .nav-item::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: -5px;
+      left: 50%;
+      background: linear-gradient(90deg, #ff6b6b, #ffab76);
+      transition: all 0.3s ease;
+      transform: translateX(-50%);
+    }
+
+    .nav-item:hover::after { width: 100%; }
+
+    footer { background: #ffffff; }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col">
+  <!-- Navigation Bar -->
+  <nav class="navbar fixed top-0 w-full z-50 px-4 sm:px-6 py-3 sm:py-4 border-b border-orange-300 shadow-md flex items-center justify-between">
+    <div class="max-w-7xl mx-auto flex items-center justify-between w-full">
+      <!-- Logo -->
+      <a href="/user_home" class="flex items-center space-x-2 cursor-pointer text-[#bf360c] font-bold text-lg sm:text-xl select-none">
+        <div class="w-9 h-9 sm:w-10 sm:h-10 bg-gradient-to-r from-yellow-400 to-orange-600 rounded-lg flex items-center justify-center text-white text-xl sm:text-2xl">
+          <i class="fas fa-utensils"></i>
+        </div>
+        <span>Delicious Bites</span>
+      </a>
+
+      <!-- Desktop Navigation -->
+      <div class="hidden md:flex items-center space-x-8 lg:space-x-10 text-[#bf360c] font-semibold">
+        <a href="/user_home" class="nav-item hover:text-orange-500 transition">
+          <i class="fas fa-book-open"></i> Menu
+        </a>
+        <a href="/my_orders" class="nav-item hover:text-orange-500 transition">
+          <i class="fas fa-receipt"></i> My Orders
+        </a>
+        <a href="/my_profile" class="nav-item hover:text-orange-500 transition">
+          <i class="fas fa-user"></i> Profile
+        </a>
+        <a href="/logout" class="nav-item hover:text-red-500 transition">
+          <i class="fas fa-sign-out-alt"></i>
+          <span>Logout</span>
+        </a>
+      </div>
+
+      <!-- User Dropdown -->
+      <div class="relative hidden sm:block">
+        <button id="user-menu-button" aria-expanded="false" aria-haspopup="true"
+                class="flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-orange-400 rounded-full px-1"
+                aria-label="User menu">
+          <span class="text-[#bf360c] font-semibold hidden md:block max-w-[120px] truncate">
+            {{ user_name  }}
+          </span><i id="user-menu-icon"
+     class="fas fa-chevron-down text-xs text-[#bf360c] transition-transform duration-200"></i>
+        </button>
+
+        <div id="user-menu"
+             class="hidden absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-xl py-2 ring-1 ring-black ring-opacity-10 z-50 text-sm"
+             role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
+          <a href="/my_profile"
+             class="block px-4 py-2 text-[#bf360c] hover:bg-yellow-100 rounded transition"
+             role="menuitem" tabindex="0">
+            <i class="fas fa-user mr-2"></i> My Profile
+          </a>
+          <a href="/settings"
+             class="block px-4 py-2 text-[#bf360c] hover:bg-yellow-100 rounded transition"
+             role="menuitem" tabindex="0">
+            <i class="fas fa-cog mr-2"></i> Settings
+          </a>
+          <div class="border-t border-yellow-200 my-1"></div>
+          <a href="/logout"
+             class="block px-4 py-2 text-red-600 hover:bg-red-50 rounded transition"
+             role="menuitem" tabindex="0">
+            <i class="fas fa-sign-out-alt mr-2"></i> Logout
+          </a>
+        </div>
+      </div>
+
+      <!-- Mobile menu button -->
+      <button id="mobile-menu-button"
+              class="md:hidden text-[#bf360c] focus:outline-none focus:ring-2 focus:ring-orange-400 rounded-md ml-3"
+              aria-label="Toggle mobile menu" aria-expanded="false" aria-haspopup="true">
+        <i class="fas fa-bars text-2xl"></i>
+      </button>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div id="mobile-menu"
+         class="hidden md:hidden bg-white/95 rounded-lg mt-2 mx-4 sm:mx-6 p-4 space-y-3 shadow-xl text-sm"
+         role="menu" aria-label="Mobile navigation menu">
+      <div class="flex items-center gap-3 pb-2 border-b border-orange-100 mb-2">
+        <span class="font-semibold text-[#bf360c]">
+          {{ user_name  }}
+        </span>
+      </div>
+      <a href="/user_home" class="block text-[#bf360c] hover:text-orange-500 font-semibold flex items-center gap-2" role="menuitem">
+        <i class="fas fa-book-open"></i> Menu
+      </a>
+      <a href="/my_orders" class="block text-[#bf360c] hover:text-orange-500 font-semibold flex items-center gap-2" role="menuitem">
+        <i class="fas fa-receipt"></i> My Orders
+      </a>
+      <a href="/my_profile" class="block text-[#bf360c] hover:text-orange-500 font-semibold flex items-center gap-2" role="menuitem">
+        <i class="fas fa-user"></i> Profile
+      </a>
+      <a href="/logout" class="block text-red-600 hover:text-red-700 font-semibold flex items-center gap-2" role="menuitem">
+        <i class="fas fa-sign-out-alt"></i> Logout
+      </a>
+    </div>
+  </nav>
+
+  <!-- Welcome banner (15 sec) -->
+  {% if show_welcome and user_name %}
+  <div id="welcome-banner"
+       class="fixed top-20 left-1/2 -translate-x-1/2 z-40
+              bg-white/95 border border-orange-300 shadow-xl
+              rounded-2xl px-6 py-3 flex items-center gap-3 text-sm text-[#bf360c]
+              transition-all duration-300">
+    <span class="text-xl">👋</span>
+    <div>
+      <p class="font-semibold">Welcome Back, {{ user_name }}!</p>
+      <p class="text-xs text-orange-700">
+        Here's your menu.
+      </p>
+    </div>
+  </div>
+  {% endif %}
+
+  <!-- Main Content -->
+  <main class="container mx-auto px-4 sm:px-6 pt-28 sm:pt-32 pb-20 flex-grow">
+    {% block m4 %}{% endblock %}
+  </main>
+
+  <!-- Footer with global Cart badge -->
+  <footer class="fixed bottom-0 left-0 right-0 bg-white/95 border-t border-gray-300 shadow-md flex justify-between items-center px-4 sm:px-6 py-3 z-50">
+
+  </footer>
+
+  <script>
+    const userMenuButton = document.getElementById('user-menu-button');
+    const userMenu = document.getElementById('user-menu');
+    const mobileMenuButton = document.getElementById('mobile-menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+
+    if (userMenuButton && userMenu) {
+      userMenuButton.addEventListener('click', () => {
+        userMenu.classList.toggle('hidden');
+        const expanded = userMenuButton.getAttribute('aria-expanded') === 'true';
+        userMenuButton.setAttribute('aria-expanded', !expanded);
+      });
+
+      window.addEventListener('click', (e) => {
+        if (!userMenuButton.contains(e.target) && !userMenu.contains(e.target)) {
+          userMenu.classList.add('hidden');
+          userMenuButton.setAttribute('aria-expanded', 'false');
+        }
+      });
+    }
+
+    if (mobileMenuButton && mobileMenu) {
+      mobileMenuButton.addEventListener('click', () => {
+        mobileMenu.classList.toggle('hidden');
+        const icon = mobileMenuButton.querySelector('i');
+        if (mobileMenu.classList.contains('hidden')) {
+          icon.classList.remove('fa-times');
+          icon.classList.add('fa-bars');
+          mobileMenuButton.setAttribute('aria-expanded', 'false');
+        } else {
+          icon.classList.remove('fa-bars');
+          icon.classList.add('fa-times');
+          mobileMenuButton.setAttribute('aria-expanded', 'true');
+        }
+      });
+    }
+
+    // Welcome banner auto-hide after 15s
+    const welcomeBanner = document.getElementById('welcome-banner');
+    if (welcomeBanner) {
+      setTimeout(() => {
+        welcomeBanner.classList.add('opacity-0', 'translate-y-2');
+        setTimeout(() => welcomeBanner.remove(), 400);
+      }, 3000);
+    }
+  </script>
+</body>
+</html>

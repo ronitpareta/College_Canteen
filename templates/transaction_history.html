@@ -1,0 +1,60 @@
+{% extends "admin.html" %}
+{% block m2 %}
+
+<div class="max-w-7xl mx-auto bg-white/20 backdrop-blur-md rounded-xl p-8 mt-12 shadow-lg animate-fade-in text-white">
+  <h2 class="text-3xl font-bold mb-6 text-center">Transaction History</h2>
+  <div class="overflow-x-auto">
+    <table class="min-w-full table-auto border-collapse border border-gray-300 text-left">
+      <thead>
+        <tr class="bg-gray-100 text-gray-700">
+          <th class="border border-gray-300 px-4 py-2">Transaction Id</th>
+          <th class="border border-gray-300 px-4 py-2">Deposit Date</th>
+          <th class="border border-gray-300 px-4 py-2">Reg no</th>
+          <th class="border border-gray-300 px-4 py-2">Course Id</th>
+          <th class="border border-gray-300 px-4 py-2">Amount</th>
+          <th class="border border-gray-300 px-4 py-2">Payment Method</th>
+          <th class="border border-gray-300 px-4 py-2">Course Name</th>
+          <th class="border border-gray-300 px-4 py-2">Student Name</th>
+          <th class="border border-gray-300 px-4 py-2">Contact</th>
+          <th class="border border-gray-300 px-4 py-2">E-mail</th>
+        </tr>
+      </thead>
+      <tbody class="text-gray-100">
+        {% if transactions %}
+          {% for t in transactions %}
+            <tr class="hover:bg-white/10 transition-colors">
+              <td class="border border-gray-300 px-4 py-2">{{ t[0] }}</td>
+              <td class="border border-gray-300 px-4 py-2">{{ t[4] }}</td>
+              <td class="border border-gray-300 px-4 py-2">{{ t[1] }}</td>
+              <td class="border border-gray-300 px-4 py-2">{{ t[2] }}</td>
+              <td class="border border-gray-300 px-4 py-2">{{ t[3] }}</td>
+              <td class="border border-gray-300 px-4 py-2">{{ t[5] }}</td>
+              <td class="border border-gray-300 px-4 py-2">{{ t[6] }}</td>
+              <td class="border border-gray-300 px-4 py-2">{{ t[7] }}</td>
+              <td class="border border-gray-300 px-4 py-2">{{ t[8] }}</td>
+              <td class="border border-gray-300 px-4 py-2 break-words max-w-xs">{{ t[9] }}</td>
+            </tr>
+          {% endfor %}
+        {% else %}
+          <tr>
+            <td colspan="10" class="text-center py-6 text-gray-300">
+              No Transaction made Yet.
+            </td>
+          </tr>
+        {% endif %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<style>
+@keyframes fade-in {
+  0% { opacity: 0; transform: translateY(20px);}
+  100% { opacity: 1; transform: translateY(0);}
+}
+.animate-fade-in {
+  animation: fade-in 0.8s;
+}
+</style>
+
+{% endblock %}

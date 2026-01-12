@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Bunk & Bite | Manage Students</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <style>
+    /* Typography */
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+
+    :root {
+        --bg-main: #09090b; /* Zinc 950 */
+        --bg-card: #18181b; /* Zinc 900 */
+        --accent-lime: #d9f99d; /* Lime 200 */
+        --accent-orange: #fb923c; /* Orange 400 */
+        --text-main: #fafafa;
+        --text-muted: #a1a1aa;
+    }
+
+    body {
+        font-family: 'Inter', sans-serif;
+        background-color: var(--bg-main);
+        color: var(--text-main);
+        overflow-x: hidden;
+    }
+
+    h1, h2, h3, h4, .font-heading {
+        font-family: 'Space Grotesk', sans-serif;
+    }
+
+    /* Grain Texture */
+    .bg-grain {
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 50; opacity: 0.04;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: var(--bg-main); }
+    ::-webkit-scrollbar-thumb { background: #3f3f46; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #52525b; }
+
+    /* Bento Card */
+    .bento-card {
+        background-color: var(--bg-card);
+        border: 1px solid rgba(255,255,255,0.05);
+        transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+    }
+    .bento-card:hover {
+        border-color: rgba(255,255,255,0.15);
+        box-shadow: 0 20px 40px -10px rgba(0,0,0,0.5);
+    }
+
+    /* Sidebar Active */
+    .sidebar-active {
+        background-color: rgba(255, 255, 255, 0.05);
+        border-right: 2px solid var(--accent-orange);
+        color: white !important;
+    }
+
+    /* Input Styling */
+    .tech-input {
+        background: rgba(0, 0, 0, 0.3);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        color: white;
+        transition: all 0.3s ease;
+        font-family: 'Inter', sans-serif;
+    }
+    .tech-input:focus {
+        border-color: var(--accent-orange);
+        box-shadow: 0 0 0 1px rgba(251, 146, 60, 0.2);
+        outline: none;
+        background: rgba(255, 255, 255, 0.05);
+    }
+
+    /* Table Styling */
+    .tech-table th {
+        border-bottom: 1px solid rgba(255,255,255,0.1);
+        color: #71717a; /* Zinc 500 */
+        font-family: 'Space Grotesk', sans-serif;
+        font-size: 0.7rem;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+    }
+    .tech-table td {
+        border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+
+    /* Animations */
+    @keyframes fadeUp {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-up {
+        animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    @keyframes float-blob {
+        0% { transform: translate(0px, 0px) scale(1); }
+        33% { transform: translate(30px, -50px) scale(1.1); }
+        66% { transform: translate(-20px, 20px) scale(0.9); }
+        100% { transform: translate(0px, 0px) scale(1); }
+    }
+    .animate-blob { animation: float-blob 10s infinite ease-in-out; }
+  </style>
+</head>
+
+<body class="flex min-h-screen relative selection:bg-orange-500 selection:text-white">
+
+  <div class="bg-grain"></div>
+  <div class="fixed top-0 left-0 w-full h-full overflow-hidden -z-10">
+      <div class="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-orange-600/10 rounded-full blur-[100px] animate-blob"></div>
+      <div class="absolute bottom-[-10%] right-[-10%] w-[500px] h-[500px] bg-lime-500/5 rounded-full blur-[100px] animate-blob" style="animation-delay: 2s"></div>
+  </div>
+
+  <aside class="w-20 lg:w-64 bg-zinc-950/80 border-r border-white/5 backdrop-blur-md flex flex-col fixed h-full z-50 overflow-y-auto transition-all duration-300">
+    <div class="p-6 flex items-center gap-3 shrink-0 h-20 border-b border-white/5">
+      <div class="w-8 h-8 bg-white text-black flex items-center justify-center rounded font-bold text-lg">B</div>
+      <span class="hidden lg:block font-heading font-bold text-xl tracking-tight text-white">Bunk<span class="text-gray-500">&</span>Bite</span>
+    </div>
+
+    <nav class="flex-grow mt-6 px-3 pb-20 space-y-6">
+
+      <div>
+        <p class="hidden lg:block text-[10px] font-bold text-gray-500 uppercase px-4 mb-2 tracking-widest font-heading">Operations</p>
+        <a href="show_orders" class="flex items-center gap-3 p-3 rounded text-gray-400 hover:text-white hover:bg-white/5 transition group">
+          <i class="fas fa-th-large w-5 group-hover:text-orange-400 transition"></i>
+          <span class="hidden lg:block font-medium text-sm">Dashboard</span>
+        </a>
+        <a href="add_items" class="flex items-center gap-3 p-3 rounded text-gray-400 hover:text-white hover:bg-white/5 transition group">
+          <i class="fas fa-plus-circle w-5 group-hover:text-orange-400 transition"></i>
+          <span class="hidden lg:block font-medium text-sm">Add Menu Item</span>
+        </a>
+        <a href="show_items" class="flex items-center gap-3 p-3 rounded text-gray-400 hover:text-white hover:bg-white/5 transition group">
+          <i class="fas fa-utensils w-5 group-hover:text-orange-400 transition"></i>
+          <span class="hidden lg:block font-medium text-sm">Manage Menu</span>
+        </a>
+      </div>
+
+      <div>
+        <p class="hidden lg:block text-[10px] font-bold text-gray-500 uppercase px-4 mb-2 tracking-widest font-heading">User Mgmt</p>
+        <a href="admin_reg" class="flex items-center gap-3 p-3 rounded text-gray-400 hover:text-white hover:bg-white/5 transition group">
+          <i class="fas fa-user-shield w-5 group-hover:text-lime-400 transition"></i>
+          <span class="hidden lg:block font-medium text-sm">Add Admin</span>
+        </a>
+        <a href="student_reg_admin" class="flex items-center gap-3 p-3 rounded text-gray-400 hover:text-white hover:bg-white/5 transition group">
+          <i class="fas fa-user-plus w-5 group-hover:text-lime-400 transition"></i>
+          <span class="hidden lg:block font-medium text-sm">Add Student</span>
+        </a>
+        <a href="show_students" class="sidebar-active flex items-center gap-3 p-3 rounded text-gray-400 hover:text-white hover:bg-white/5 transition group">
+          <i class="fas fa-users w-5 group-hover:text-lime-400 transition"></i>
+          <span class="hidden lg:block font-medium text-sm">Manage Students</span>
+        </a>
+      </div>
+
+      <div>
+        <p class="hidden lg:block text-[10px] font-bold text-gray-500 uppercase px-4 mb-2 tracking-widest font-heading">Account</p>
+        <a href="admin_profile" class="flex items-center gap-3 p-3 rounded text-gray-400 hover:text-white hover:bg-white/5 transition group">
+          <i class="fas fa-id-card w-5 group-hover:text-white transition"></i>
+          <span class="hidden lg:block font-medium text-sm">Manage Profile</span>
+        </a>
+        <a href="change_password" class="flex items-center gap-3 p-3 rounded text-gray-400 hover:text-white hover:bg-white/5 transition group">
+          <i class="fas fa-key w-5 group-hover:text-white transition"></i>
+          <span class="hidden lg:block font-medium text-sm">Change Password</span>
+        </a>
+        <a href="logout" class="flex items-center gap-3 p-3 rounded text-red-400/70 hover:bg-red-500/10 hover:text-red-400 transition group mt-2">
+          <i class="fas fa-sign-out-alt w-5"></i>
+          <span class="hidden lg:block font-medium text-sm">Logout</span>
+        </a>
+      </div>
+
+    </nav>
+  </aside>
+
+  <main class="ml-20 lg:ml-64 flex-grow relative">
+
+    <header class="h-20 bg-zinc-950/80 backdrop-blur-md border-b border-white/5 flex items-center justify-between px-8 sticky top-0 z-40">
+      <div class="flex items-center gap-2 text-sm">
+        <i class="fas fa-users text-orange-500"></i>
+        <span class="text-gray-400">User Mgmt /</span>
+        <span class="text-white font-bold tracking-wide">Manage Students</span>
+      </div>
+
+      <div class="flex items-center gap-6">
+        <div class="hidden md:flex items-center gap-2 px-3 py-1 rounded bg-lime-400/10 border border-lime-400/20">
+          <span class="relative flex h-2 w-2">
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-lime-400 opacity-75"></span>
+            <span class="relative inline-flex rounded-full h-2 w-2 bg-lime-500"></span>
+          </span>
+          <span class="text-[10px] font-bold text-lime-400 uppercase tracking-wider">System Online</span>
+        </div>
+        <div class="h-8 w-px bg-white/10 mx-2"></div>
+        <div class="flex items-center gap-3 text-right">
+          <div class="hidden md:block">
+            <div class="text-sm font-bold text-white font-heading">Admin Portal</div>
+            <div class="text-xs text-gray-500">Bunk & Bite v2.0</div>
+          </div>
+          <div class="w-10 h-10 rounded bg-zinc-900 border border-white/10 flex items-center justify-center text-gray-300">
+            <i class="fas fa-user-shield"></i>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="p-6 md:p-10 max-w-7xl mx-auto">
+
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
+        <div>
+          <h2 class="text-4xl font-bold font-heading text-white tracking-tight">Student <span class="text-orange-500">Directory</span></h2>
+          <p class="text-gray-400 mt-2 text-sm font-medium">View and manage all registered students.</p>
+        </div>
+
+        <a href="student_reg_admin" class="bg-zinc-800 border border-white/10 px-6 py-3 rounded text-xs font-bold uppercase tracking-wider text-white hover:border-orange-500 hover:bg-orange-500 hover:text-black transition shadow-lg flex items-center gap-2 font-heading">
+            <i class="fas fa-plus"></i> Add New Student
+        </a>
+      </div>
+
+      <div class="bento-card rounded-xl overflow-hidden shadow-xl animate-up">
+        <div class="px-6 py-4 border-b border-white/5 flex justify-between items-center bg-zinc-900/50">
+            <h3 class="font-bold text-white font-heading text-sm">Registered Database</h3>
+            <div class="text-[10px] text-gray-500 bg-zinc-800 px-2 py-1 rounded border border-white/5 uppercase tracking-wider font-bold">
+                <i class="fas fa-database mr-1"></i> Live Data
+            </div>
+        </div>
+
+        <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse tech-table">
+                <thead>
+                    <tr class="bg-zinc-900/30">
+                        <th class="py-3 px-5">ID</th>
+                        <th class="py-3 px-5">Name</th>
+                        <th class="py-3 px-5">Contact</th>
+                        <th class="py-3 px-5">Email</th>
+                        <th class="py-3 px-5 text-right">Action</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-white/5">
+                    {% if result %}
+                        {% for r in result %}
+                        <tr class="group hover:bg-white/[0.02] transition-colors duration-200">
+                            <td class="py-4 px-5 font-mono text-xs text-gray-500">#{{r[0]}}</td>
+                            <td class="py-4 px-5">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-8 h-8 rounded bg-zinc-800 text-gray-400 flex items-center justify-center text-xs font-bold border border-white/5">
+                                        {{ r[1][:1] }}
+                                    </div>
+                                    <span class="text-sm font-bold text-white">{{r[1]}}</span>
+                                </div>
+                            </td>
+                            <td class="py-4 px-5 text-xs text-gray-400 font-mono">{{r[2]}}</td>
+                            <td class="py-4 px-5 text-xs text-gray-400">{{r[3]}}</td>
+                            <td class="py-4 px-5 text-right">
+                                <form action="student_profile_admin" method="post" class="inline-block">
+                                    <input type="hidden" name="t1" value="{{r[3]}}"/>
+                                    <input type="hidden" name="t2" value="{{r[0]}}"/>
+                                    <button class="group/btn relative px-3 py-1.5 rounded bg-zinc-800 border border-white/10 text-gray-300 text-[10px] font-bold uppercase tracking-wider hover:bg-orange-500 hover:text-black hover:border-orange-500 transition-all flex items-center gap-2 ml-auto">
+                                        <span>View</span>
+                                        <i class="fas fa-arrow-right group-hover/btn:translate-x-1 transition-transform"></i>
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td colspan="5" class="py-12 text-center text-gray-500">
+                                <i class="fas fa-users-slash text-2xl mb-2 opacity-50"></i>
+                                <p class="text-xs uppercase tracking-widest">No students registered yet</p>
+                            </td>
+                        </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</body>
+</html>

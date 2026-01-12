@@ -1,0 +1,10 @@
+{% if msg %}
+<h2>{{msg}}</h2>
+{% endif %}
+<form action="edit_item" method="post" style="display:inline;">
+                  <input type="hidden" value="{{id }}" name="id"/>
+                  <button type="submit"
+                    class="bg-gradient-to-r from-indigo-600 to-purple-600 px-3 py-1 rounded-lg text-white font-semibold shadow-md hover:scale-105 hover:shadow-lg transition-transform duration-200">
+                    continue
+                  </button>
+</form>

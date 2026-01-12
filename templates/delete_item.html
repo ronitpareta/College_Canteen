@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Bunk & Bite | Action Complete</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+
+    :root {
+        --bg-main: #09090b;
+        --bg-card: #18181b;
+        --accent-lime: #d9f99d;
+        --accent-orange: #fb923c;
+    }
+
+    body {
+        font-family: 'Inter', sans-serif;
+        background-color: var(--bg-main);
+        color: #fafafa;
+        overflow-x: hidden;
+    }
+
+    .font-heading { font-family: 'Space Grotesk', sans-serif; }
+
+    /* Grain Texture */
+    .bg-grain {
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 50; opacity: 0.04;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    }
+
+    /* Bento Card */
+    .bento-card {
+        background-color: var(--bg-card);
+        border: 1px solid rgba(255,255,255,0.05);
+        transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+    }
+    .bento-card:hover {
+        border-color: rgba(255,255,255,0.15);
+        box-shadow: 0 20px 40px -10px rgba(0,0,0,0.5);
+    }
+
+    /* Sidebar Active */
+    .sidebar-active {
+        background-color: rgba(255, 255, 255, 0.05);
+        border-right: 2px solid var(--accent-orange);
+        color: white !important;
+    }
+
+    /* Animations */
+    @keyframes float-blob {
+        0% { transform: translate(0px, 0px) scale(1); }
+        33% { transform: translate(30px, -50px) scale(1.1); }
+        66% { transform: translate(-20px, 20px) scale(0.9); }
+        100% { transform: translate(0px, 0px) scale(1); }
+    }
+    .animate-blob { animation: float-blob 10s infinite ease-in-out; }
+  </style>
+</head>
+
+<body class="flex min-h-screen relative selection:bg-orange-500 selection:text-white">
+
+  <div class="bg-grain"></div>
+  <div class="fixed top-0 left-0 w-full h-full overflow-hidden -z-10">
+      <div class="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-orange-600/10 rounded-full blur-[100px] animate-blob"></div>
+      <div class="absolute bottom-[-10%] right-[-10%] w-[500px] h-[500px] bg-lime-500/5 rounded-full blur-[100px] animate-blob" style="animation-delay: 2s"></div>
+  </div>
+
+  <aside class="w-20 lg:w-64 bg-zinc-950/80 border-r border-white/5 backdrop-blur-md flex flex-col fixed h-full z-50 overflow-y-auto transition-all duration-300">
+    <div class="p-6 flex items-center gap-3 shrink-0 h-20 border-b border-white/5">
+      <div class="w-8 h-8 bg-white text-black flex items-center justify-center rounded font-bold text-lg">B</div>
+      <span class="hidden lg:block font-heading font-bold text-xl tracking-tight text-white">Bunk<span class="text-gray-500">&</span>Bite</span>
+    </div>
+
+    <nav class="flex-grow mt-6 px-3 pb-20 space-y-6">
+        <div>
+            <p class="hidden lg:block text-[10px] font-bold text-gray-500 uppercase px-4 mb-2 tracking-widest font-heading">Operations</p>
+            <a href="show_orders" class="flex items-center gap-3 p-3 rounded text-gray-400 hover:text-white hover:bg-white/5 transition group">
+            <i class="fas fa-th-large w-5 group-hover:text-orange-400 transition"></i>
+            <span class="hidden lg:block font-medium text-sm">Dashboard</span>
+            </a>
+            <a href="add_items" class="sidebar-active flex items-center gap-3 p-3 rounded text-gray-400 hover:text-white hover:bg-white/5 transition group">
+            <i class="fas fa-plus-circle w-5 group-hover:text-orange-400 transition"></i>
+            <span class="hidden lg:block font-medium text-sm">Add Menu Item</span>
+            </a>
+            <a href="show_items" class="flex items-center gap-3 p-3 rounded text-gray-400 hover:text-white hover:bg-white/5 transition group">
+            <i class="fas fa-utensils w-5 group-hover:text-orange-400 transition"></i>
+            <span class="hidden lg:block font-medium text-sm">Manage Menu</span>
+            </a>
+        </div>
+    </nav>
+  </aside>
+
+  <main class="ml-20 lg:ml-64 flex-grow flex items-center justify-center min-h-screen relative p-6">
+
+    <div class="w-full max-w-md relative">
+        <div class="absolute -top-10 -right-10 w-32 h-32 bg-orange-500/10 rounded-full blur-3xl"></div>
+        <div class="absolute -bottom-10 -left-10 w-32 h-32 bg-lime-500/10 rounded-full blur-3xl"></div>
+
+        <div class="bento-card p-10 rounded-xl shadow-2xl relative z-10 text-center">
+
+            <div class="w-16 h-16 rounded-full bg-lime-400/10 border border-lime-400/20 flex items-center justify-center mx-auto mb-6 shadow-[0_0_20px_rgba(163,230,53,0.1)]">
+                <i class="fas fa-check text-2xl text-lime-400"></i>
+            </div>
+
+            {% if msg %}
+            <h2 class="text-2xl font-bold font-heading text-white tracking-tight mb-2">Success</h2>
+            <p class="text-gray-400 text-sm mb-8 font-medium">{{ msg }}</p>
+            {% else %}
+            <h2 class="text-2xl font-bold font-heading text-white tracking-tight mb-8">Action Completed</h2>
+            {% endif %}
+
+            <form action="{{ url_for('show_items') }}" class="w-full">
+              <button type="submit"
+                    class="w-full py-3.5 bg-orange-500 hover:bg-orange-400 text-black font-bold font-heading uppercase tracking-wide rounded transition-all transform hover:scale-[1.02] active:scale-[0.98] shadow-lg flex items-center justify-center gap-2">
+                <span>Continue</span>
+                <i class="fas fa-arrow-right"></i>
+              </button>
+            </form>
+
+        </div>
+    </div>
+
+  </main>
+
+</body>
+</html>

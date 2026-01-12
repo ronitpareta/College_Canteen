@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Bunk & Bite | Order Status</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <style>
+    /* Typography */
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+
+    :root {
+        --bg-main: #09090b; /* Zinc 950 */
+        --bg-card: #18181b; /* Zinc 900 */
+        --accent-lime: #d9f99d; /* Lime 200 */
+        --accent-orange: #fb923c; /* Orange 400 */
+        --text-main: #fafafa;
+        --text-muted: #a1a1aa;
+    }
+
+    body {
+        font-family: 'Inter', sans-serif;
+        background-color: var(--bg-main);
+        color: var(--text-main);
+        overflow-x: hidden;
+    }
+
+    h1, h2, h3, h4, .font-heading {
+        font-family: 'Space Grotesk', sans-serif;
+    }
+
+    /* Grain Texture */
+    .bg-grain {
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 50; opacity: 0.04;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: var(--bg-main); }
+    ::-webkit-scrollbar-thumb { background: #3f3f46; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #52525b; }
+
+    /* Bento Card */
+    .bento-card {
+        background-color: var(--bg-card);
+        border: 1px solid rgba(255,255,255,0.05);
+        transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+    }
+    .bento-card:hover {
+        border-color: rgba(255,255,255,0.15);
+        box-shadow: 0 20px 40px -10px rgba(0,0,0,0.5);
+    }
+
+    /* Sidebar Active */
+    .sidebar-active {
+        background-color: rgba(255, 255, 255, 0.05);
+        border-right: 2px solid var(--accent-orange);
+        color: white !important;
+    }
+
+    /* Animations */
+    @keyframes fadeUp {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-up {
+        animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    @keyframes float-blob {
+        0% { transform: translate(0px, 0px) scale(1); }
+        33% { transform: translate(30px, -50px) scale(1.1); }
+        66% { transform: translate(-20px, 20px) scale(0.9); }
+        100% { transform: translate(0px, 0px) scale(1); }
+    }
+    .animate-blob { animation: float-blob 10s infinite ease-in-out; }
+
+    /* Pulse for Success Icon */
+    @keyframes pulse-tech {
+        0% { box-shadow: 0 0 0 0 rgba(217, 249, 157, 0.2); }
+        70% { box-shadow: 0 0 0 20px rgba(217, 249, 157, 0); }
+        100% { box-shadow: 0 0 0 0 rgba(217, 249, 157, 0); }
+    }
+    .animate-pulse-tech {
+        animation: pulse-tech 2s infinite;
+    }
+  </style>
+</head>
+
+<body class="flex min-h-screen relative selection:bg-orange-500 selection:text-white">
+
+  <div class="bg-grain"></div>
+  <div class="fixed top-0 left-0 w-full h-full overflow-hidden -z-10">
+      <div class="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-lime-500/10 rounded-full blur-[100px] animate-blob"></div>
+      <div class="absolute bottom-[-10%] right-[-10%] w-[500px] h-[500px] bg-orange-500/5 rounded-full blur-[100px] animate-blob" style="animation-delay: 2s"></div>
+  </div>
+
+  <aside class="w-20 lg:w-64 bg-zinc-950/80 border-r border-white/5 backdrop-blur-md flex flex-col fixed h-full z-50 overflow-y-auto transition-all duration-300">
+    <div class="p-6 flex items-center gap-3 shrink-0 h-20 border-b border-white/5">
+      <div class="w-8 h-8 bg-white text-black flex items-center justify-center rounded font-bold text-lg">B</div>
+      <span class="hidden lg:block font-heading font-bold text-xl tracking-tight text-white">Bunk<span class="text-gray-500">&</span>Bite</span>
+    </div>
+
+    <nav class="flex-grow mt-6 px-3 pb-20 space-y-2">
+      <div>
+        <p class="hidden lg:block text-[10px] font-bold text-gray-500 uppercase px-4 mb-2 tracking-widest font-heading">Menu</p>
+        <a href="/user_home" class="flex items-center gap-3 p-3 rounded text-gray-400 hover:text-white hover:bg-white/5 transition group">
+          <i class="fas fa-book-open w-5 group-hover:text-orange-400 transition"></i>
+          <span class="hidden lg:block font-medium text-sm">Browse Menu</span>
+        </a>
+        <a href="/my_orders" class="flex items-center gap-3 p-3 rounded text-gray-400 hover:text-white hover:bg-white/5 transition group">
+          <i class="fas fa-receipt w-5 group-hover:text-lime-400 transition"></i>
+          <span class="hidden lg:block font-medium text-sm">My Orders</span>
+        </a>
+      </div>
+
+      <div class="mt-8">
+        <p class="hidden lg:block text-[10px] font-bold text-gray-500 uppercase px-4 mb-2 tracking-widest font-heading">Profile</p>
+        <a href="/my_profile" class="flex items-center gap-3 p-3 rounded text-gray-400 hover:text-white hover:bg-white/5 transition group">
+          <i class="fas fa-user-circle w-5 group-hover:text-white transition"></i>
+          <span class="hidden lg:block font-medium text-sm">My Profile</span>
+        </a>
+        <a href="/logout" class="flex items-center gap-3 p-3 rounded text-red-400/70 hover:bg-red-500/10 hover:text-red-400 transition group mt-2">
+          <i class="fas fa-sign-out-alt w-5"></i>
+          <span class="hidden lg:block font-medium text-sm">Logout</span>
+        </a>
+      </div>
+    </nav>
+  </aside>
+
+  <main class="ml-20 lg:ml-64 flex-grow relative">
+
+    <header class="h-20 bg-zinc-950/80 backdrop-blur-md border-b border-white/5 flex items-center justify-between px-8 sticky top-0 z-40">
+      <div class="flex items-center gap-2 text-sm">
+        <i class="fas fa-check-circle text-lime-400"></i>
+        <span class="text-gray-400">Order Status</span>
+      </div>
+
+      <div class="flex items-center gap-6">
+        <div class="flex items-center gap-3 text-right">
+          <div class="hidden md:block">
+            <div class="text-sm font-bold text-white font-heading">{{ user_name }}</div>
+            <div class="text-xs text-gray-500 font-medium">Student Account</div>
+          </div>
+          <div class="w-10 h-10 rounded bg-zinc-900 border border-white/10 flex items-center justify-center text-gray-200">
+            <i class="fas fa-user"></i>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    {% if show_welcome and user_name %}
+    <div id="welcome-banner" class="absolute top-24 left-1/2 -translate-x-1/2 z-50 animate-up">
+        <div class="bg-zinc-900 px-6 py-2 rounded flex items-center gap-4 border border-lime-400/20 shadow-lg">
+            <span class="text-lg">👋</span>
+            <div>
+                <p class="text-xs font-bold text-white font-heading">Welcome, <span class="text-lime-400">{{ user_name }}</span>!</p>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <div class="p-6 md:p-10 flex items-center justify-center min-h-[80vh]">
+
+      <div class="w-full max-w-md relative animate-up">
+        <div class="absolute inset-0 bg-lime-500/10 rounded-full blur-[80px] opacity-20"></div>
+
+        <div class="bento-card p-10 md:p-12 rounded-xl relative z-10 text-center border-t border-t-lime-400/50">
+
+            <div class="w-20 h-20 mx-auto bg-zinc-800 rounded-full flex items-center justify-center border border-lime-500/20 mb-8 animate-pulse-tech">
+                <i class="fas fa-check text-3xl text-lime-400"></i>
+            </div>
+
+            <h1 class="text-3xl font-bold text-white mb-3 tracking-tight font-heading">Order Received</h1>
+
+            {% if msg %}
+            <p class="text-gray-400 text-sm mb-10 leading-relaxed font-medium">
+               {{ msg }}
+            </p>
+            {% else %}
+            <p class="text-gray-400 text-sm mb-10 leading-relaxed font-medium">
+               Your order has been placed successfully and sent to the kitchen display system.
+            </p>
+            {% endif %}
+
+            <a href="{{ url_for('user_home') }}"
+               class="inline-flex w-full items-center justify-center gap-2 py-4 bg-orange-500 hover:bg-orange-400 text-black font-bold font-heading rounded-lg transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98]">
+                <span>CONTINUE SHOPPING</span>
+                <i class="fas fa-arrow-right"></i>
+            </a>
+
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <script>
+    const welcomeBanner = document.getElementById('welcome-banner');
+    if(welcomeBanner){
+      setTimeout(() => {
+        welcomeBanner.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+        welcomeBanner.style.opacity = '0';
+        welcomeBanner.style.transform = 'translate(-50%, -20px)';
+        setTimeout(() => welcomeBanner.remove(), 500);
+      }, 3000);
+    }
+  </script>
+</body>
+</html>

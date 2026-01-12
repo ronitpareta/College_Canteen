@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Bunk & Bite | Student Profile</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <style>
+    /* Typography */
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+
+    :root {
+        --bg-main: #09090b; /* Zinc 950 */
+        --bg-card: #18181b; /* Zinc 900 */
+        --accent-lime: #d9f99d; /* Lime 200 */
+        --accent-orange: #fb923c; /* Orange 400 */
+        --text-main: #fafafa;
+        --text-muted: #a1a1aa;
+    }
+
+    body {
+        font-family: 'Inter', sans-serif;
+        background-color: var(--bg-main);
+        color: var(--text-main);
+        overflow-x: hidden;
+    }
+
+    h1, h2, h3, h4, .font-heading {
+        font-family: 'Space Grotesk', sans-serif;
+    }
+
+    /* Grain Texture */
+    .bg-grain {
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 50; opacity: 0.04;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: var(--bg-main); }
+    ::-webkit-scrollbar-thumb { background: #3f3f46; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #52525b; }
+
+    /* Bento Card */
+    .bento-card {
+        background-color: var(--bg-card);
+        border: 1px solid rgba(255,255,255,0.05);
+        transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+    }
+    .bento-card:hover {
+        border-color: rgba(255,255,255,0.15);
+        box-shadow: 0 20px 40px -10px rgba(0,0,0,0.5);
+    }
+
+    /* Sidebar Active */
+    .sidebar-active {
+        background-color: rgba(255, 255, 255, 0.05);
+        border-right: 2px solid var(--accent-orange);
+        color: white !important;
+    }
+
+    /* Input Styling (for upload btn) */
+    .file-input::file-selector-button {
+        background-color: #27272a;
+        color: #d4d4d8;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        padding: 0.3rem 0.8rem;
+        border-radius: 0.375rem;
+        margin-right: 1rem;
+        cursor: pointer;
+        transition: all 0.2s;
+        font-family: 'Space Grotesk', sans-serif;
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+    .file-input::file-selector-button:hover {
+        background-color: var(--accent-orange);
+        color: black;
+        border-color: var(--accent-orange);
+    }
+
+    /* Animations */
+    @keyframes float-blob {
+        0% { transform: translate(0px, 0px) scale(1); }
+        33% { transform: translate(30px, -50px) scale(1.1); }
+        66% { transform: translate(-20px, 20px) scale(0.9); }
+        100% { transform: translate(0px, 0px) scale(1); }
+    }
+    .animate-blob { animation: float-blob 10s infinite ease-in-out; }
+  </style>
+</head>
+
+<body class="flex min-h-screen relative selection:bg-orange-500 selection:text-white">
+
+  <div class="bg-grain"></div>
+  <div class="fixed top-0 left-0 w-full h-full overflow-hidden -z-10">
+      <div class="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-lime-500/10 rounded-full blur-[100px] animate-blob"></div>
+      <div class="absolute bottom-[-10%] right-[-10%] w-[500px] h-[500px] bg-orange-500/5 rounded-full blur-[100px] animate-blob" style="animation-delay: 2s"></div>
+  </div>
+
+  <aside class="w-20 lg:w-64 bg-zinc-950/80 border-r border-white/5 backdrop-blur-md flex flex-col fixed h-full z-50 overflow-y-auto transition-all duration-300">
+    <div class="p-6 flex items-center gap-3 shrink-0 h-20 border-b border-white/5">
+      <div class="w-8 h-8 bg-white text-black flex items-center justify-center rounded font-bold text-lg">B</div>
+      <span class="hidden lg:block font-heading font-bold text-xl tracking-tight text-white">Bunk<span class="text-gray-500">&</span>Bite</span>
+    </div>
+
+    <nav class="flex-grow mt-6 px-3 pb-20 space-y-6">
+
+      <div>
+        <p class="hidden lg:block text-[10px] font-bold text-gray-500 uppercase px-4 mb-2 tracking-widest font-heading">Operations</p>
+        <a href="show_orders" class="flex items-center gap-3 p-3 rounded text-gray-400 hover:text-white hover:bg-white/5 transition group">
+          <i class="fas fa-th-large w-5 group-hover:text-orange-400 transition"></i>
+          <span class="hidden lg:block font-medium text-sm">Dashboard</span>
+        </a>
+        <a href="add_items" class="flex items-center gap-3 p-3 rounded text-gray-400 hover:text-white hover:bg-white/5 transition group">
+          <i class="fas fa-plus-circle w-5 group-hover:text-orange-400 transition"></i>
+          <span class="hidden lg:block font-medium text-sm">Add Menu Item</span>
+        </a>
+        <a href="show_items" class="flex items-center gap-3 p-3 rounded text-gray-400 hover:text-white hover:bg-white/5 transition group">
+          <i class="fas fa-utensils w-5 group-hover:text-orange-400 transition"></i>
+          <span class="hidden lg:block font-medium text-sm">Manage Menu</span>
+        </a>
+      </div>
+
+      <div>
+        <p class="hidden lg:block text-[10px] font-bold text-gray-500 uppercase px-4 mb-2 tracking-widest font-heading">User Mgmt</p>
+        <a href="admin_reg" class="flex items-center gap-3 p-3 rounded text-gray-400 hover:text-white hover:bg-white/5 transition group">
+          <i class="fas fa-user-shield w-5 group-hover:text-lime-400 transition"></i>
+          <span class="hidden lg:block font-medium text-sm">Add Admin</span>
+        </a>
+        <a href="student_reg_admin" class="flex items-center gap-3 p-3 rounded text-gray-400 hover:text-white hover:bg-white/5 transition group">
+          <i class="fas fa-user-plus w-5 group-hover:text-lime-400 transition"></i>
+          <span class="hidden lg:block font-medium text-sm">Add Student</span>
+        </a>
+        <a href="show_students" class="sidebar-active flex items-center gap-3 p-3 rounded text-gray-400 hover:text-white hover:bg-white/5 transition group">
+          <i class="fas fa-users w-5 group-hover:text-lime-400 transition"></i>
+          <span class="hidden lg:block font-medium text-sm">Manage Student</span>
+        </a>
+      </div>
+
+      <div>
+        <p class="hidden lg:block text-[10px] font-bold text-gray-500 uppercase px-4 mb-2 tracking-widest font-heading">Account</p>
+        <a href="admin_profile" class="flex items-center gap-3 p-3 rounded text-gray-400 hover:text-white hover:bg-white/5 transition group">
+          <i class="fas fa-id-card w-5 group-hover:text-white transition"></i>
+          <span class="hidden lg:block font-medium text-sm">Manage Profile</span>
+        </a>
+        <a href="change_password" class="flex items-center gap-3 p-3 rounded text-gray-400 hover:text-white hover:bg-white/5 transition group">
+          <i class="fas fa-key w-5 group-hover:text-white transition"></i>
+          <span class="hidden lg:block font-medium text-sm">Change Password</span>
+        </a>
+        <a href="logout" class="flex items-center gap-3 p-3 rounded text-red-400/70 hover:bg-red-500/10 hover:text-red-400 transition group mt-2">
+          <i class="fas fa-sign-out-alt w-5"></i>
+          <span class="hidden lg:block font-medium text-sm">Logout</span>
+        </a>
+      </div>
+
+    </nav>
+  </aside>
+
+  <main class="ml-20 lg:ml-64 flex-grow relative">
+
+    <header class="h-20 bg-zinc-950/80 backdrop-blur-md border-b border-white/5 flex items-center justify-between px-8 sticky top-0 z-40">
+      <div class="flex items-center gap-2 text-sm">
+        <i class="fas fa-id-badge text-lime-400"></i>
+        <span class="text-gray-400">User Mgmt /</span>
+        <span class="text-white font-bold tracking-wide">Student Profile</span>
+      </div>
+
+      <div class="flex items-center gap-6">
+        <div class="hidden md:flex items-center gap-2 px-3 py-1 rounded bg-lime-400/10 border border-lime-400/20">
+          <span class="relative flex h-2 w-2">
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-lime-400 opacity-75"></span>
+            <span class="relative inline-flex rounded-full h-2 w-2 bg-lime-500"></span>
+          </span>
+          <span class="text-[10px] font-bold text-lime-400 uppercase tracking-wider">System Online</span>
+        </div>
+        <div class="h-8 w-px bg-white/10 mx-2"></div>
+        <div class="flex items-center gap-3 text-right">
+          <div class="hidden md:block">
+            <div class="text-sm font-bold text-white font-heading">Admin Portal</div>
+            <div class="text-xs text-gray-500">Bunk & Bite v2.0</div>
+          </div>
+          <div class="w-10 h-10 rounded bg-zinc-900 border border-white/10 flex items-center justify-center text-gray-300">
+            <i class="fas fa-user-shield"></i>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="p-6 md:p-10 max-w-7xl mx-auto">
+
+      <div class="flex items-center justify-between mb-8">
+        <h2 class="text-4xl font-bold font-heading text-white tracking-tight">Student <span class="text-lime-400">Overview</span></h2>
+        <a href="show_students" class="text-sm font-medium text-gray-500 hover:text-white transition flex items-center gap-2">
+            <i class="fas fa-arrow-left"></i> Back to Directory
+        </a>
+      </div>
+
+      {% if data %}
+      <div class="grid grid-cols-1 xl:grid-cols-3 gap-8">
+
+        <div class="xl:col-span-1">
+            <div class="bento-card p-6 rounded-xl shadow-2xl relative overflow-hidden">
+                <div class="absolute top-0 left-0 w-full h-24 bg-gradient-to-br from-zinc-800 to-zinc-900/0"></div>
+
+                <div class="relative flex flex-col items-center mt-4">
+
+                    {% if photo == 'nophoto' or not photo %}
+                        <div class="w-32 h-32 rounded-full border-4 border-[#18181b] bg-zinc-800 flex items-center justify-center text-gray-600 shadow-xl mb-4">
+                            <i class="fas fa-user text-4xl"></i>
+                        </div>
+
+                        <form action="upload_student_photo" enctype="multipart/form-data" method="post" class="w-full text-center mb-6">
+                            <label class="block mb-2 text-[10px] font-bold text-gray-500 uppercase tracking-widest">Upload Photo</label>
+                            <input type="file" name="F1" class="file-input block w-full text-xs text-gray-400 mx-auto max-w-[200px]"/>
+                            <input type="hidden" name="T1" value="{{ data[5] }}"/>
+                            <input type="hidden" name="T3" value="{{ data[0] }}"/>
+                            <button type="submit" class="mt-2 px-4 py-1.5 bg-zinc-800 border border-white/10 text-gray-300 text-[10px] font-bold uppercase tracking-wide rounded hover:bg-white hover:text-black transition">
+                                <i class="fas fa-cloud-upload-alt mr-1"></i> Upload
+                            </button>
+                        </form>
+
+                    {% else %}
+                        <div class="relative group mb-6">
+                            <img src="../static/photos/{{ photo }}" class="w-32 h-32 rounded-full border-4 border-[#18181b] object-cover shadow-xl grayscale-[30%] group-hover:grayscale-0 transition duration-300"/>
+                            <form action="delete_student_photo" method="post" class="absolute bottom-0 right-0">
+                                <input type="hidden" name="T2" value="{{ data[5] }}"/>
+                                <input type="hidden" name="T3" value="{{ data[0] }}"/>
+                                <button type="submit" class="w-8 h-8 bg-red-500 rounded-full text-white flex items-center justify-center hover:bg-red-600 transition shadow-lg border-2 border-[#18181b]" title="Delete Photo">
+                                    <i class="fas fa-trash-alt text-xs"></i>
+                                </button>
+                            </form>
+                        </div>
+                    {% endif %}
+
+                    <h3 class="text-2xl font-bold text-white text-center font-heading tracking-tight">{{ data[1] }}</h3>
+                    <p class="text-sm text-gray-500 font-mono">{{ data[5] }}</p>
+                    <div class="mt-2 px-3 py-1 rounded bg-zinc-900 border border-white/5 text-[10px] text-gray-400 font-bold uppercase tracking-widest">
+                        ID: {{ data[0] }}
+                    </div>
+
+                    <div class="w-full mt-8 space-y-4">
+                        <div class="flex items-center gap-3 p-3 rounded bg-zinc-800/30 border border-white/5">
+                            <div class="w-8 h-8 rounded bg-zinc-800 flex items-center justify-center text-gray-400 border border-white/5"><i class="fas fa-venus-mars"></i></div>
+                            <div>
+                                <p class="text-[10px] text-gray-500 uppercase font-bold tracking-wider">Gender</p>
+                                <p class="text-sm text-white font-medium">{{ data[2] }}</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-3 p-3 rounded bg-zinc-800/30 border border-white/5">
+                            <div class="w-8 h-8 rounded bg-zinc-800 flex items-center justify-center text-gray-400 border border-white/5"><i class="fas fa-phone"></i></div>
+                            <div>
+                                <p class="text-[10px] text-gray-500 uppercase font-bold tracking-wider">Contact</p>
+                                <p class="text-sm text-white font-medium font-mono">{{ data[4] }}</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-3 p-3 rounded bg-zinc-800/30 border border-white/5">
+                            <div class="w-8 h-8 rounded bg-zinc-800 flex items-center justify-center text-gray-400 border border-white/5"><i class="fas fa-map-marker-alt"></i></div>
+                            <div>
+                                <p class="text-[10px] text-gray-500 uppercase font-bold tracking-wider">Address</p>
+                                <p class="text-sm text-white font-medium">{{ data[3] }}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-3 w-full mt-8 pt-6 border-t border-white/5">
+                        <form action="update_student" method="post" class="w-full">
+                            <input type="hidden" name="t1" value="{{ data[5] }}"/>
+                            <button class="w-full py-2.5 rounded bg-zinc-800 border border-white/10 text-gray-300 text-xs font-bold uppercase tracking-wide hover:bg-white hover:text-black transition">
+                                Edit Profile
+                            </button>
+                        </form>
+
+                        <form action="delete_student" onsubmit="return confirm('Do you really want to delete?')" method="post" class="w-full">
+                            <input type="hidden" name="del1" value="{{ data[5] }}"/>
+                            <input type="hidden" name="del2" value="{{ data[0] }}"/>
+                            <button class="w-full py-2.5 rounded bg-red-500/10 border border-red-500/20 text-red-500 text-xs font-bold uppercase tracking-wide hover:bg-red-500 hover:text-white transition">
+                                Delete
+                            </button>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+
+        <div class="xl:col-span-2 space-y-8">
+
+            <div class="bento-card p-8 rounded-xl shadow-xl flex flex-col md:flex-row items-center justify-between gap-6 relative overflow-hidden">
+                <div class="absolute -right-10 -bottom-10 w-40 h-40 bg-lime-500/10 rounded-full blur-3xl"></div>
+
+                <div>
+                    <h3 class="text-gray-500 font-bold text-xs uppercase tracking-widest mb-1 font-heading">Current Wallet Balance</h3>
+                    <div class="text-5xl font-bold text-white font-mono tracking-tight">
+                        ₹{{ data[6] }}
+                    </div>
+                </div>
+
+                <form action="add_points" method="post">
+                    <input type="hidden" name="C1" value="{{ data[0] }}"/>
+                    <input type="hidden" name="C2" value="{{ data[5] }}"/>
+                    <button class="px-8 py-4 bg-lime-500 hover:bg-lime-400 text-black font-bold font-heading rounded uppercase tracking-wide shadow-lg hover:scale-105 transition transform flex items-center gap-2">
+                        <i class="fas fa-plus-circle"></i> Recharge Wallet
+                    </button>
+                </form>
+            </div>
+
+            <div class="bento-card rounded-xl overflow-hidden shadow-xl">
+                <div class="px-6 py-4 border-b border-white/5 flex items-center justify-between bg-zinc-900/50">
+                    <h3 class="font-bold text-white flex items-center gap-2 font-heading text-sm">
+                        <i class="fas fa-history text-gray-500"></i> Transaction History
+                    </h3>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse tech-table">
+                        <thead>
+                            <tr class="bg-zinc-900/30">
+                                <th class="py-3 px-6 text-xs text-gray-500 uppercase tracking-wider font-heading">Transaction ID</th>
+                                <th class="py-3 px-6 text-xs text-gray-500 uppercase tracking-wider font-heading">Date & Time</th>
+                                <th class="py-3 px-6 text-right text-xs text-gray-500 uppercase tracking-wider font-heading">Amount Credited</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-white/5">
+                            {% if points %}
+                                {% for p in points %}
+                                <tr class="hover:bg-white/[0.02] transition-colors">
+                                    <td class="py-4 px-6 font-mono text-xs text-gray-500">#{{ p[0] }}</td>
+                                    <td class="py-4 px-6 text-sm text-gray-400 font-mono">
+                                        <i class="far fa-clock mr-2 text-gray-600"></i> {{ p[1] }}
+                                    </td>
+                                    <td class="py-4 px-6 text-right font-bold text-lime-400 font-mono">
+                                        + ₹{{ p[3] }}
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            {% else %}
+                                <tr>
+                                    <td colspan="3" class="py-12 text-center text-gray-500">
+                                        <div class="mb-2"><i class="fas fa-receipt text-2xl opacity-30"></i></div>
+                                        <p class="text-xs uppercase tracking-widest">No transactions found</p>
+                                    </td>
+                                </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+
+      </div>
+      {% endif %}
+
+    </div>
+  </main>
+</body>
+</html>
