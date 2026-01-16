@@ -39,7 +39,8 @@ File Handling: Werkzeug secure_filename for image uploads
 📂 Project Structure
 Plaintext
 
-```/Project_Root
+```
+/Project_Root
 │
 ├── app.py                # Main application entry point
 ├── MyLib.py              # Database connection and helper functions
@@ -56,7 +57,8 @@ Plaintext
 │   ├── order.html
 │   └── ... (other templates)
 │
-└── README.md```
+└── README.md
+```
 
 
 ⚙️ Installation & Setup
@@ -71,9 +73,10 @@ pip install mysql-connector-python
 ```
 2. Database Setup
 You need to create a database with the following tables (inferred from the code). Run these SQL commands in your database:
-```
+
 SQL
 
+```
 -- Login Credentials Table
 CREATE TABLE login_data (
     email VARCHAR(100) PRIMARY KEY,
@@ -144,7 +147,8 @@ CREATE TABLE transactions_history (
     email VARCHAR(100),
     amount INT,
     st_id INT
-);```
+);
+```
 3. File System Setup
 Ensure the following directories exist to store uploaded images:
 
