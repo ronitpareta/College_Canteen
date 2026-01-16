@@ -64,15 +64,16 @@ Plaintext
 Ensure you have Python installed. You will need to install Flask and the database connector used in your MyLib.py.
 
 Bash
-
-'''pip install flask
+```
+pip install flask
 # If using mysql-connector
-pip install mysql-connector-python'''
+pip install mysql-connector-python
+```
 2. Database Setup
 You need to create a database with the following tables (inferred from the code). Run these SQL commands in your database:
-
-SQL
 ```
+SQL
+
 -- Login Credentials Table
 CREATE TABLE login_data (
     email VARCHAR(100) PRIMARY KEY,
@@ -155,8 +156,9 @@ Ensure the following directories exist to store uploaded images:
 Run the application using the command:
 
 Bash
-
-```python app.py```
+```
+python app.py
+```
 Access the app in your browser at: http://127.0.0.1:5000/
 
 🔑 Key Functionalities Explained
